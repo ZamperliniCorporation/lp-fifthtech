@@ -22,7 +22,7 @@ type HeroAction = {
   variant?: "default" | "outline" | "secondary" | "ghost" | "link" | "destructive";
 };
 
-type HeroProps = React.HTMLAttributes<HTMLElement> & {
+type HeroProps = Omit<React.HTMLAttributes<HTMLElement>, "title"> & {
   title: React.ReactNode;
   subtitle?: React.ReactNode;
   actions?: HeroAction[];
