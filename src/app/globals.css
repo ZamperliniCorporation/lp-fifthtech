@@ -1,0 +1,38 @@
+/* app/globals.css */
+@import "tailwindcss";
+/* Inclui tudo dentro de src (app, components, sections, etc.) */
+@source "../**/*.{js,ts,jsx,tsx,mdx}";
+@source "./**/*.{js,ts,jsx,tsx,mdx}";
+
+:root {
+  --background: 0 0% 0%;
+  --foreground: 0 0% 98%;
+
+  --muted: 0 0% 10%;
+  --muted-foreground: 0 0% 70%;
+
+  --primary: 0 0% 100%;
+  --primary-foreground: 0 0% 0%;
+
+  --secondary: 0 0% 16%;
+  --secondary-foreground: 0 0% 100%;
+
+  --accent: 0 0% 12%;
+  --accent-foreground: 0 0% 98%;
+
+  --border: 0 0% 14%;
+  --ring: 0 0% 40%;
+  --input: 0 0% 14%;
+
+  --destructive: 0 72% 50%;
+  --destructive-foreground: 0 0% 100%;
+}
+
+html, body { height: 100%; }
+
+body {
+  background: hsl(var(--background));
+  color: hsl(var(--foreground));
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
