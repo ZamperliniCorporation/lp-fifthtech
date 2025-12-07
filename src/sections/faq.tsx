@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import * as React from "react";
 import { motion } from "framer-motion";
@@ -11,62 +11,62 @@ export function FaqSection() {
     processo: "Processo",
     tecnologia: "Tecnologia & Stack",
     prazos: "Prazos & Entregas",
-    seguranca: "Qualidade & Seguranca",
+    seguranca: "Qualidade & Segurança",
     contrato: "Contrato & Suporte",
   };
 
   const faqData = {
     processo: [
       {
-        question: "Como funciona o inicio de um projeto?",
+        question: "Como funciona o início de um projeto?",
         answer:
-          "O trabalho comeca com um diagnostico objetivo: entendimento do processo atual, definicao de metas, requisitos e restricoes. Em seguida, montamos um plano de entrega com escopo priorizado, marcos e cronograma. A execucao ocorre em ciclos curtos, com validacoes frequentes para garantir alinhamento e previsibilidade.",
+          "Começamos com um diagnóstico objetivo: entendimento do processo atual, definição de metas, requisitos e restrições. Na sequência, montamos um plano de entrega com escopo priorizado, marcos e cronograma. Executamos em ciclos curtos, com validações frequentes para garantir alinhamento e previsibilidade.",
       },
       {
-        question: "Voces ajudam a definir o escopo e priorizacao?",
+        question: "Vocês ajudam a definir o escopo e priorização?",
         answer:
-          "Sim. Quando o escopo ainda nao esta fechado, conduzimos um discovery para organizar backlog, definir o MVP e priorizar o que traz mais valor no menor tempo. Isso reduz retrabalho e acelera a entrega.",
+          "Sim. Quando o escopo ainda não está fechado, conduzimos um discovery para organizar backlog, definir o MVP e priorizar o que traz mais valor no menor tempo. Isso reduz retrabalho e acelera a entrega.",
       },
       {
-        question: "Como e feito o acompanhamento do projeto?",
+        question: "Como é feito o acompanhamento do projeto?",
         answer:
-          "O acompanhamento e transparente: checkpoints periodicos, registro de decisoes e atualizacao continua do status (o que foi entregue, proximos passos e riscos). Isso garante previsibilidade e rapidez na tomada de decisao.",
+          "Acompanhamento transparente: checkpoints periódicos, registro de decisões e atualização contínua do status (o que foi entregue, próximos passos e riscos). Isso garante previsibilidade e rapidez na tomada de decisão.",
       },
     ],
 
     tecnologia: [
       {
-        question: "Qual e a stack padrao da FifthTech?",
+        question: "Qual é a stack padrão da FifthTech?",
         answer:
-          "Stack base: React/Next.js no front-end, React Native para apps, Tailwind CSS para UI. Back-end em Python ou Java conforme o produto. Banco: PostgreSQL com modelagem SQL estruturada. Integracoes via APIs e webhooks.",
+          "Stack base: React/Next.js no front-end, React Native para apps, Tailwind CSS para UI. Back-end em Python ou Java conforme o produto. Banco: PostgreSQL com modelagem SQL estruturada. Integrações via APIs e webhooks.",
       },
       {
-        question: "Voces fazem integracoes com APIs, servicos e webhooks?",
+        question: "Vocês fazem integrações com APIs, serviços e webhooks?",
         answer:
-          "Sim. Integramos APIs REST/GraphQL, webhooks e rotinas de automacao. O objetivo e reduzir trabalho manual, aumentar rastreabilidade e garantir consistencia de dados.",
+          "Sim. Integramos APIs REST/GraphQL, webhooks e rotinas de automação. O objetivo é reduzir trabalho manual, aumentar rastreabilidade e garantir consistência de dados.",
       },
       {
-        question: "E possivel evoluir um sistema ja existente?",
+        question: "É possível evoluir um sistema já existente?",
         answer:
-          "Sim. Fazemos avaliacao tecnica (arquitetura, debitos, gargalos e riscos) e plano de evolucao. Modernizacao pode ser incremental para manter continuidade do negocio.",
+          "Sim. Fazemos avaliação técnica (arquitetura, débitos, gargalos e riscos) e plano de evolução. A modernização pode ser incremental para manter continuidade do negócio.",
       },
     ],
 
     prazos: [
       {
-        question: "Qual e o prazo tipico para um MVP?",
+        question: "Qual é o prazo típico para um MVP?",
         answer:
-          "Depende do escopo e integracoes, mas MVPs bem definidos saem em ciclos curtos, com foco no essencial para validar e evoluir. A proposta traz etapas e entregaveis claros para previsibilidade.",
+          "Depende do escopo e integrações, mas MVPs bem definidos saem em ciclos curtos, com foco no essencial para validar e evoluir. A proposta traz etapas e entregáveis claros para previsibilidade.",
       },
       {
-        question: "Como sao feitas as entregas durante o projeto?",
+        question: "Como são feitas as entregas durante o projeto?",
         answer:
-          "Entregas continuas e priorizadas. Cada ciclo fecha funcionalidades utilizaveis, com validacao e ajustes. Reduz risco, acelera aprendizado e entrega valor ao longo do caminho — nao so no final.",
+          "Entregas contínuas e priorizadas. Cada ciclo fecha funcionalidades utilizáveis, com validação e ajustes. Reduz risco, acelera aprendizado e entrega valor ao longo do caminho — não só no final.",
       },
       {
-        question: "Voces fazem landing pages premium com foco em conversao?",
+        question: "Vocês fazem landing pages premium com foco em conversão?",
         answer:
-          "Sim. LPs com design tecnologico, performance, motion/microinteracoes quando faz sentido e boas praticas de SEO, focadas em clareza e conversao.",
+          "Sim. LPs com design tecnológico, performance, motion/microinterações quando faz sentido e boas práticas de SEO, focadas em clareza e conversão.",
       },
     ],
 
@@ -74,35 +74,35 @@ export function FaqSection() {
       {
         question: "Como garantem qualidade e estabilidade?",
         answer:
-          "Boas praticas de engenharia: organizacao de codigo, revisao, padroes de UI, validacoes e testes quando apropriado. Observabilidade e logs para manutencao e evolucao.",
+          "Boas práticas de engenharia: organização de código, revisão, padrões de UI, validações e testes quando apropriado. Observabilidade e logs para manutenção e evolução.",
       },
       {
-        question: "Como tratam seguranca e dados?",
+        question: "Como tratam segurança e dados?",
         answer:
-          "Controle de acesso por perfis, validacoes no servidor, protecao de endpoints, cuidado com credenciais e boas praticas no banco (PostgreSQL). Requisitos extras de seguranca podem ser definidos conforme o caso.",
+          "Controle de acesso por perfis, validações no servidor, proteção de endpoints, cuidado com credenciais e boas práticas no banco (PostgreSQL). Requisitos extras de segurança podem ser definidos conforme o caso.",
       },
       {
-        question: "O sistema fica rapido e escalavel?",
+        question: "O sistema fica rápido e escalável?",
         answer:
-          "Arquitetura adequada ao cenario real. Quando necessario, aplicamos paginacao, cache, otimizacao de queries SQL e melhorias no fluxo de dados para performance sustentavel.",
+          "Arquitetura adequada ao cenário real. Quando necessário, aplicamos paginação, cache, otimização de queries SQL e melhorias no fluxo de dados para performance sustentável.",
       },
     ],
 
     contrato: [
       {
-        question: "Como funciona orcamento e contratacao?",
+        question: "Como funciona orçamento e contratação?",
         answer:
-          "Orcamento baseado em escopo, complexidade e integracoes. Proposta com etapas, entregaveis e premissas. Contratacao por projeto/etapas ou ciclos continuos de evolucao.",
+          "Orçamento baseado em escopo, complexidade e integrações. Proposta com etapas, entregáveis e premissas. Contratação por projeto/etapas ou ciclos contínuos de evolução.",
       },
       {
-        question: "Existe suporte apos a entrega?",
+        question: "Existe suporte após a entrega?",
         answer:
-          "Sim. Apos o go-live pode haver estabilizacao e suporte, alem de evolucao continua para melhorias e novas funcionalidades.",
+          "Sim. Após o go-live pode haver estabilização e suporte, além de evolução contínua para melhorias e novas funcionalidades.",
       },
       {
-        question: "Como funciona comunicacao e pontos de contato?",
+        question: "Como funciona comunicação e pontos de contato?",
         answer:
-          "Definimos um canal principal e rotina de check-ins para reduzir ruido, acelerar decisoes e manter fluxo. Reunioes objetivas quando necessario.",
+          "Definimos um canal principal e rotina de check-ins para reduzir ruído, acelerar decisões e manter fluxo. Reuniões objetivas quando necessário.",
       },
     ],
   };
@@ -117,7 +117,7 @@ export function FaqSection() {
       className="mx-auto max-w-6xl px-6 py-24"
     >
       <FAQ
-        title="Perguntas frequentes"
+        title="Perguntas que recebemos"
         subtitle="FAQ"
         categories={categories}
         faqData={faqData}
@@ -125,4 +125,3 @@ export function FaqSection() {
     </motion.section>
   );
 }
-

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import * as React from "react";
 import Link from "next/link";
@@ -6,7 +6,6 @@ import { motion } from "framer-motion";
 import { Button } from "../components/ui/button";
 import { cn } from "../lib/utils";
 
-// Corrigir tipagem do ease para usar asserção de tipo, conforme framer-motion espera:
 const ease = [0.16, 1, 0.3, 1] as [number, number, number, number];
 
 export function CTASection() {
@@ -23,22 +22,18 @@ export function CTASection() {
             "shadow-2xl shadow-black/60"
           )}
         >
-          {/* glow */}
           <div className="pointer-events-none absolute -top-24 left-1/2 h-72 w-[48rem] -translate-x-1/2 rounded-full bg-white/10 blur-3xl" />
           <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(900px_circle_at_50%_0%,rgba(255,255,255,0.10),transparent_55%)]" />
 
           <div className="relative z-10 flex flex-col items-center text-center">
-            <p className="text-xs uppercase tracking-[0.22em] text-white/50">
-              Vamos conversar
-            </p>
+            <p className="text-xs uppercase tracking-[0.22em] text-white/50">Vamos conversar</p>
 
             <h3 className="mt-4 text-balance text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-              Um projeto claro, com entrega rápida e padrão premium.
+              Planejamos, construímos e evoluímos rápido mantendo padrão premium e previsibilidade.
             </h3>
 
             <p className="mt-4 max-w-2xl text-white/60">
-              Conta o que você precisa (software, app, automação ou landing page).
-              A gente te responde com próximos passos e uma estimativa objetiva.
+              Conte o que precisa (software, app, automação ou landing page). Respondemos com próximos passos claros e uma estimativa objetiva.
             </p>
 
             <div className="mt-8 flex flex-wrap justify-center gap-3">
@@ -64,7 +59,7 @@ export function CTASection() {
             </div>
 
             <p className="mt-6 text-xs text-white/40">
-              Resposta rápida • Clareza no escopo • Evolução contínua
+              Resposta rápida | Clareza no escopo | Evolução contínua
             </p>
           </div>
         </motion.div>

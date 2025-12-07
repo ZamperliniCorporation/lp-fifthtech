@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import * as React from "react";
 import { motion, useAnimation, type Variants, type Transition } from "framer-motion";
@@ -31,8 +31,8 @@ const SLIDES: Slide[] = [
     id: "ft-software",
     title: "Softwares sob medida",
     description:
-      "Sistemas web e internos feitos em cima do seu processo. Do painel administrativo ao portal do cliente — com performance e padrão premium.",
-    services: ["Web apps", "Sistemas internos", "Portais", "Dashboards"],
+      "Arquitetura, desenvolvimento e evolução de sistemas web alinhados ao seu processo, com governança, performance e suporte contínuo.",
+    services: ["Web apps", "Sistemas internos", "Portais B2B/B2C", "Dashboards"],
     type: "Software",
     imageUrl: "/images/services/software.jpg",
   },
@@ -40,7 +40,7 @@ const SLIDES: Slide[] = [
     id: "ft-apps",
     title: "Aplicativos (MVP à escala)",
     description:
-      "Apps para validar, lançar e evoluir rápido. Experiência fluida, integrações e base sólida pra crescer sem retrabalho.",
+      "Apps prontos para validar e escalar: UX fluida, integrações confiáveis e base sólida para crescer sem retrabalho.",
     services: ["MVP", "UI/UX", "Integrações", "Publicação"],
     type: "App",
     imageUrl: "/images/services/app.jpg",
@@ -49,7 +49,7 @@ const SLIDES: Slide[] = [
     id: "ft-lps",
     title: "Landing pages premium",
     description:
-      "Landing pages com motion, microinterações e design tecnológico. Construídas pra converter e elevar o posicionamento da marca.",
+      "Landing pages com motion e narrativa forte para posicionar sua marca, gerar autoridade e converter com clareza.",
     services: ["Design", "Motion", "SEO", "Conversão"],
     type: "LP",
     imageUrl: "/images/services/lp.jpg",
@@ -58,15 +58,12 @@ const SLIDES: Slide[] = [
     id: "ft-automations",
     title: "Automações e integrações",
     description:
-      "Automatizamos tarefas e conectamos sistemas com APIs e webhooks. Menos trabalho manual, mais eficiência e rastreabilidade.",
+      "Automações e integrações que reduzem o trabalho manual e aumentam rastreabilidade, com observabilidade e suporte ao negócio.",
     services: ["APIs", "Webhooks", "Pipelines", "Observabilidade"],
     type: "Automação",
     imageUrl: "/images/services/automacao.jpg",
   },
 ];
-
-// Framer Motion aceita cubic-bezier como 'ease' se passada em string ou array [x1, y1, x2, y2]
-// Portanto, é necessário tipar corretamente a variante e passar ease como tupla 4 elementos
 
 const fadeUp: Variants = {
   hide: { opacity: 0, y: 22, filter: "blur(6px)" },
@@ -74,7 +71,7 @@ const fadeUp: Variants = {
     opacity: 1,
     y: 0,
     filter: "blur(0px)",
-    transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }, // Corrigido
+    transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] },
   },
 };
 
@@ -84,7 +81,7 @@ const cardFade: Variants = {
     opacity: 1,
     y: 0,
     filter: "blur(0px)",
-    transition: { duration: 0.55, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] }, // Corrigido
+    transition: { duration: 0.55, ease: [0.16, 1, 0.3, 1] as [number, number, number, number] },
   },
 };
 
@@ -127,17 +124,14 @@ export function Services() {
           onViewportEnter={header.enter}
           onViewportLeave={header.exit}
         >
-          <p className="text-xs uppercase tracking-[0.22em] text-white/50">
-            Serviços
-          </p>
+          <p className="text-xs uppercase tracking-[0.22em] text-white/50">Serviços</p>
 
           <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
             O que a FifthTech entrega.
           </h2>
 
           <p className="mt-4 max-w-2xl text-white/60">
-            Software em geral, aplicativos, landing pages e automações — sempre com foco em
-            clareza, velocidade e qualidade de entrega.
+            Software, apps, landing pages e automações com foco em velocidade de entrega, confiabilidade e narrativas que elevam sua marca.
           </p>
         </motion.div>
       </div>
@@ -218,7 +212,7 @@ export function Services() {
 
                       <div className="pt-1">
                         <p className="text-xs text-white/55">
-                          Quer um orçamento rápido? A gente te responde com clareza e próximos passos.
+                          Quer um orçamento rápido? Respondemos com clareza e próximos passos.
                         </p>
                       </div>
                     </CardHoverRevealContent>
