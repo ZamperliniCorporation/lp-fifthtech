@@ -8,6 +8,8 @@ import {
   useMotionValue,
   useSpring,
   useTransform,
+  useScroll,
+  useInView,
 } from "framer-motion";
 
 import { cn } from "../lib/utils";
@@ -29,7 +31,6 @@ type HeroProps = React.HTMLAttributes<HTMLElement> & {
   actionsClassName?: string;
 };
 
-// Garante que sempre entregamos um variant aceito pelo Button
 function mapButtonVariant(variant?: string) {
   switch (variant) {
     case "default":
@@ -58,36 +59,62 @@ const Hero = React.forwardRef<HTMLElement, HeroProps>(
     },
     ref
   ) => {
-    // posição do mouse para spotlight (iniciando no centro para já aparecer luz)
+    // refs
+    const sectionRef = React.useRef<HTMLElement | null>(null);
+
+    // forwardRef + localRef
+    const setRefs = React.useCallback(
+      (node: HTMLElement | null) => {
+        sectionRef.current = node;
+        if (!ref) return;
+        if (typeof ref === "function") ref(node);
+        else (ref as React.MutableRefObject<HTMLElement | null>).current = node;
+      },
+      [ref]
+    );
+
+    // ---------- ENTRADA (quando entra em view) ----------
+    const contentRef = React.useRef<HTMLDivElement | null>(null);
+    const isInView = useInView(contentRef, { once: true, margin: "-20% 0px -35% 0px" });
+
+    // ---------- SAÍDA (conforme scroll) ----------
+    const { scrollYProgress } = useScroll({
+      target: sectionRef,
+      offset: ["start start", "end start"], // do topo da hero até ela sair do topo
+    });
+
+    // Sai aos poucos: 0 -> 1
+    const contentOpacityOut = useTransform(scrollYProgress, [0, 0.65], [1, 0]);
+    const contentYOut = useTransform(scrollYProgress, [0, 0.65], [0, 28]);
+    const contentScaleOut = useTransform(scrollYProgress, [0, 0.65], [1, 0.985]);
+
+    // ---------- Luz / cursor ----------
     const mx = useMotionValue(0);
     const my = useMotionValue(0);
 
-    // follow do spotlight (mais suave)
     const sx = useSpring(mx, { stiffness: 90, damping: 26, mass: 0.30 });
     const sy = useSpring(my, { stiffness: 90, damping: 26, mass: 0.30 });
 
-    // parallax (mais fluido e menor amplitude)
+    // parallax (fluido)
     const nx = useMotionValue(0);
     const ny = useMotionValue(0);
 
-    // >>> Ajuste chave: spring mais "macia" (menos travado)
     const snx = useSpring(nx, { stiffness: 55, damping: 22, mass: 0.45 });
     const sny = useSpring(ny, { stiffness: 55, damping: 22, mass: 0.45 });
 
-    // amplitude menor = mais clean
     const titleX = useTransform(snx, [-0.5, 0.5], [-3.5, 3.5]);
     const titleY = useTransform(sny, [-0.5, 0.5], [-2.2, 2.2]);
     const subtitleX = useTransform(snx, [-0.5, 0.5], [-2.2, 2.2]);
     const subtitleY = useTransform(sny, [-0.5, 0.5], [-1.6, 1.6]);
 
-    // drift sutil para o cone/spotlight "respirar" (menos intenso)
+    // drift (sutil)
     const drift = useMotionValue(0);
     React.useEffect(() => {
       let raf = 0;
       const start = performance.now();
       const loop = (t: number) => {
         const s = (t - start) / 1000;
-        drift.set(Math.sin(s * 0.9) * 12); // era 18, agora 12 (mais sutil)
+        drift.set(Math.sin(s * 0.9) * 12);
         raf = requestAnimationFrame(loop);
       };
       raf = requestAnimationFrame(loop);
@@ -114,11 +141,9 @@ const Hero = React.forwardRef<HTMLElement, HeroProps>(
       [mx, my, nx, ny]
     );
 
-    // reset mais suave (pra não "quebrar" quando sai do mouse)
     const onLeave = React.useCallback(() => {
       nx.set(0);
       ny.set(0);
-      // opcional: recentraliza o spotlight suavemente
       mx.set((typeof window !== "undefined" ? window.innerWidth : 0) / 2);
       my.set((typeof window !== "undefined" ? window.innerHeight : 0) / 2);
     }, [nx, ny, mx, my]);
@@ -129,17 +154,13 @@ const Hero = React.forwardRef<HTMLElement, HeroProps>(
       };
     }, []);
 
-    // >>> Cursor menos espalhado: raio menor + alpha menor
     const spotlight = useMotionTemplate`
       radial-gradient(520px circle at ${sx}px ${sy}px, rgba(255,255,255,.16), transparent 62%)
     `;
-
-    // ambient um pouco mais suave
     const ambient = useMotionTemplate`
       radial-gradient(860px circle at calc(${sx}px + ${drift}px) 10%, rgba(255,255,255,.10), transparent 64%)
     `;
 
-    // centraliza luz inicial para não ficar invisível antes do primeiro movimento
     React.useEffect(() => {
       const centerX = (typeof window !== "undefined" ? window.innerWidth : 0) / 2;
       const centerY = (typeof window !== "undefined" ? window.innerHeight : 0) / 2;
@@ -147,9 +168,15 @@ const Hero = React.forwardRef<HTMLElement, HeroProps>(
       my.set(centerY);
     }, [mx, my]);
 
+    // variants (entrada)
+    const v = {
+      hidden: { opacity: 0, y: 14, filter: "blur(6px)" },
+      show: { opacity: 1, y: 0, filter: "blur(0px)" },
+    };
+
     return (
       <section
-        ref={ref}
+        ref={setRefs}
         onMouseMove={onMove}
         onMouseLeave={onLeave}
         className={cn("relative w-full min-h-screen overflow-hidden bg-black", className)}
@@ -158,46 +185,44 @@ const Hero = React.forwardRef<HTMLElement, HeroProps>(
         {/* Base */}
         <div className="absolute inset-0 z-0 bg-black" />
 
-        {/* DottedSurface (Three.js) */}
+        {/* Background */}
         <DottedSurface className="z-[5] opacity-55" />
 
-        {/* Lamp cone (mais sutil) */}
+        {/* Cone topo (sutil) */}
         <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 z-10 h-[560px] w-[980px]">
           <div
             className="absolute inset-0 blur-2xl"
             style={{
               clipPath: "polygon(50% 0%, 51.6% 0%, 77.5% 100%, 22.5% 100%)",
-              // menos “branco forte” no cone
               background:
                 "radial-gradient(closest-side at 50% 0%, rgba(255,255,255,0.30), rgba(255,255,255,0.08) 52%, transparent 80%)",
-              opacity: 0.65, // era 0.75+ no conjunto, agora mais sutil
+              opacity: 0.65,
             }}
           />
-          {/* Hotspot da lâmpada (também mais sutil) */}
           <div className="absolute left-1/2 top-[-90px] h-80 w-[56rem] -translate-x-1/2 rounded-full bg-white/12 blur-3xl" />
           <div className="absolute left-1/2 top-[-48px] h-24 w-[30rem] -translate-x-1/2 rounded-full bg-white/12 blur-2xl" />
         </div>
 
-        {/* Spotlight mouse + Ambient drift */}
-        <motion.div
-          style={{ backgroundImage: spotlight }}
-          className="pointer-events-none absolute inset-0 z-20"
-        />
-        <motion.div
-          style={{ backgroundImage: ambient }}
-          className="pointer-events-none absolute inset-0 z-20 opacity-70"
-        />
+        {/* Lights */}
+        <motion.div style={{ backgroundImage: spotlight }} className="pointer-events-none absolute inset-0 z-20" />
+        <motion.div style={{ backgroundImage: ambient }} className="pointer-events-none absolute inset-0 z-20 opacity-70" />
 
-        {/* Vignette (segura contraste do texto) */}
+        {/* Vignette + grain */}
         <div className="pointer-events-none absolute inset-0 z-30 bg-[radial-gradient(1200px_circle_at_50%_35%,transparent_30%,rgba(0,0,0,0.92)_78%)]" />
-
-        {/* Grain */}
         <div className="pointer-events-none absolute inset-0 z-40 opacity-[0.08] mix-blend-overlay [background-image:url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22400%22><filter id=%22n%22><feTurbulence type=%22fractalNoise%22 baseFrequency=%220.8%22 numOctaves=%223%22 stitchTiles=%22stitch%22/></filter><rect width=%22400%22 height=%22400%22 filter=%22url(%23n)%22 opacity=%220.35%22/></svg>')]" />
 
-        {/* Content */}
-        <div className="relative z-50 mx-auto flex min-h-screen max-w-6xl flex-col items-center justify-center px-6 text-center">
+        {/* Content (entrada + saída no scroll) */}
+        <motion.div
+          ref={contentRef}
+          style={{ opacity: contentOpacityOut, y: contentYOut, scale: contentScaleOut }}
+          className="relative z-50 mx-auto flex min-h-screen max-w-6xl flex-col items-center justify-center px-6 text-center"
+        >
           <motion.h1
             style={{ x: titleX, y: titleY, willChange: "transform" as any }}
+            variants={v}
+            initial="hidden"
+            animate={isInView ? "show" : "hidden"}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
             className={cn(
               "text-balance text-4xl font-semibold tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl",
               titleClassName
@@ -209,6 +234,10 @@ const Hero = React.forwardRef<HTMLElement, HeroProps>(
           {subtitle && (
             <motion.p
               style={{ x: subtitleX, y: subtitleY, willChange: "transform" as any }}
+              variants={v}
+              initial="hidden"
+              animate={isInView ? "show" : "hidden"}
+              transition={{ duration: 0.7, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
               className={cn(
                 "mt-5 max-w-3xl text-pretty text-base text-white/60 sm:text-lg md:text-xl",
                 subtitleClassName
@@ -219,19 +248,31 @@ const Hero = React.forwardRef<HTMLElement, HeroProps>(
           )}
 
           {actions && actions.length > 0 && (
-            <div className={cn("mt-10 flex flex-wrap justify-center gap-3", actionsClassName)}>
+            <motion.div
+              variants={v}
+              initial="hidden"
+              animate={isInView ? "show" : "hidden"}
+              transition={{ duration: 0.7, delay: 0.16, ease: [0.16, 1, 0.3, 1] }}
+              className={cn("mt-10 flex flex-wrap justify-center gap-3", actionsClassName)}
+            >
               {actions.map((action, idx) => (
                 <Button key={idx} variant={mapButtonVariant(action.variant)} asChild>
                   <Link href={action.href}>{action.label}</Link>
                 </Button>
               ))}
-            </div>
+            </motion.div>
           )}
 
-          <p className="mt-12 text-xs text-white/35">
+          <motion.p
+            variants={v}
+            initial="hidden"
+            animate={isInView ? "show" : "hidden"}
+            transition={{ duration: 0.7, delay: 0.22, ease: [0.16, 1, 0.3, 1] }}
+            className="mt-12 text-xs text-white/35"
+          >
             Sistemas sob medida | Automação | Integrações | Dashboards
-          </p>
-        </div>
+          </motion.p>
+        </motion.div>
       </section>
     );
   }
