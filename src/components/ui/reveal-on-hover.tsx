@@ -78,7 +78,7 @@ const CardHoverRevealContent = React.forwardRef<
     <div
       ref={ref}
       className={cn(
-        "absolute inset-[auto_1.25rem_1.25rem] p-5 backdrop-blur-xl transition-all duration-500 ease-in-out",
+        "absolute inset-[auto_1.25rem_1.25rem] p-5 backdrop-blur-xl transition-all duration-350 ease-out",
         className
       )}
       style={

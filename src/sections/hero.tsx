@@ -98,15 +98,15 @@ const Hero = React.forwardRef<HTMLElement, HeroProps>(
     const mx = useMotionValue(0);
     const my = useMotionValue(0);
 
-    const sx = useSpring(mx, { stiffness: 90, damping: 26, mass: 0.30 });
-    const sy = useSpring(my, { stiffness: 90, damping: 26, mass: 0.30 });
+    const sx = useSpring(mx, { stiffness: 70, damping: 20, mass: 0.34 });
+    const sy = useSpring(my, { stiffness: 70, damping: 20, mass: 0.34 });
 
     // parallax
     const nx = useMotionValue(0);
     const ny = useMotionValue(0);
 
-    const snx = useSpring(nx, { stiffness: 55, damping: 22, mass: 0.45 });
-    const sny = useSpring(ny, { stiffness: 55, damping: 22, mass: 0.45 });
+    const snx = useSpring(nx, { stiffness: 45, damping: 18, mass: 0.38 });
+    const sny = useSpring(ny, { stiffness: 45, damping: 18, mass: 0.38 });
 
     const titleX = useTransform(snx, [-0.5, 0.5], [-3.5, 3.5]);
     const titleY = useTransform(sny, [-0.5, 0.5], [-2.2, 2.2]);
@@ -120,7 +120,7 @@ const Hero = React.forwardRef<HTMLElement, HeroProps>(
       const start = performance.now();
       const loop = (t: number) => {
         const s = (t - start) / 1000;
-        drift.set(Math.sin(s * 0.9) * 12);
+        drift.set(Math.sin(s * 0.9) * 8); // amplitude menor para suavizar
         raf = requestAnimationFrame(loop);
       };
       raf = requestAnimationFrame(loop);
@@ -229,7 +229,7 @@ const Hero = React.forwardRef<HTMLElement, HeroProps>(
             variants={v}
             initial="hidden"
             animate={isInView ? "show" : "hidden"}
-            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
             className={cn(
               "text-balance text-4xl font-semibold tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl",
               titleClassName
@@ -244,7 +244,7 @@ const Hero = React.forwardRef<HTMLElement, HeroProps>(
               variants={v}
               initial="hidden"
               animate={isInView ? "show" : "hidden"}
-              transition={{ duration: 0.7, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 0.6, delay: 0.06, ease: [0.16, 1, 0.3, 1] }}
               className={cn(
                 "mt-5 max-w-3xl text-pretty text-base text-white/60 sm:text-lg md:text-xl",
                 subtitleClassName
@@ -259,7 +259,7 @@ const Hero = React.forwardRef<HTMLElement, HeroProps>(
               variants={v}
               initial="hidden"
               animate={isInView ? "show" : "hidden"}
-              transition={{ duration: 0.7, delay: 0.16, ease: [0.16, 1, 0.3, 1] }}
+              transition={{ duration: 0.6, delay: 0.12, ease: [0.16, 1, 0.3, 1] }}
               className={cn("mt-10 flex flex-wrap justify-center gap-3", actionsClassName)}
             >
               {actions.map((action, idx) => (
@@ -274,7 +274,7 @@ const Hero = React.forwardRef<HTMLElement, HeroProps>(
             variants={v}
             initial="hidden"
             animate={isInView ? "show" : "hidden"}
-            transition={{ duration: 0.7, delay: 0.22, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ duration: 0.6, delay: 0.18, ease: [0.16, 1, 0.3, 1] }}
             className="mt-12 text-xs text-white/35"
           >
             Sistemas sob medida | Automação | Integrações | Dashboards
