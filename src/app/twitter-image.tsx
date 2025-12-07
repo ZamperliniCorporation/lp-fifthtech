@@ -1,4 +1,4 @@
-import { ImageResponse } from "next/og";
+﻿import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
 
@@ -9,7 +9,20 @@ export const size = {
 
 export const contentType = "image/png";
 
-export default function TwitterImage() {
+function toBase64(buffer: ArrayBuffer) {
+  let binary = "";
+  const bytes = new Uint8Array(buffer);
+  for (let i = 0; i < bytes.byteLength; i++) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+  return btoa(binary);
+}
+
+export default async function TwitterImage() {
+  const logoFile = new URL("../public/images/logo.png", import.meta.url);
+  const logoBuffer = await fetch(logoFile).then((res) => res.arrayBuffer());
+  const logoSrc = `data:image/png;base64,${toBase64(logoBuffer)}`;
+
   return new ImageResponse(
     (
       <div
@@ -35,12 +48,7 @@ export default function TwitterImage() {
             gap: 20,
           }}
         >
-          <img
-            src="https://fifthtech.vercel.app/images/logo.png"
-            width={110}
-            height={110}
-            style={{ objectFit: "contain" }}
-          />
+          <img src={logoSrc} width={110} height={110} style={{ objectFit: "contain" }} />
           <div
             style={{
               fontSize: 62,
