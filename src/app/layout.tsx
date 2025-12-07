@@ -3,7 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
 import Providers from "./providers";
-
+''
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Fifth Tech",
+  title: "FifthTech",
   description: "Fifth Tech — soluções digitais sob medida",
   icons: {
     icon: "/images/logo-url.png",
