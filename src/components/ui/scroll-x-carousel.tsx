@@ -1,0 +1,98 @@
+"use client";
+
+import * as React from "react";
+import { cn } from "../../lib/utils";
+import {
+  motion,
+  type HTMLMotionProps,
+  type MotionValue,
+  useScroll,
+  useSpring,
+  useTransform,
+} from "framer-motion";
+
+interface ScrollXCarouselContextValue {
+  scrollYProgress: MotionValue<number>;
+}
+
+const ScrollXCarouselContext =
+  React.createContext<ScrollXCarouselContextValue | null>(null);
+
+function useScrollXCarousel() {
+  const context = React.useContext(ScrollXCarouselContext);
+  if (!context) {
+    throw new Error("useScrollXCarousel must be used within a ScrollXCarousel");
+  }
+  return context;
+}
+
+export function ScrollXCarousel({
+  children,
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) {
+  const carouselRef = React.useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: carouselRef });
+
+  return (
+    <ScrollXCarouselContext.Provider value={{ scrollYProgress }}>
+      <div
+        ref={carouselRef}
+        className={cn("relative w-screen max-w-full", className)}
+        {...props}
+      >
+        {children}
+      </div>
+    </ScrollXCarouselContext.Provider>
+  );
+}
+
+export function ScrollXCarouselContainer({
+  className,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) {
+  return (
+    <div
+      className={cn("sticky top-0 left-0 w-full overflow-hidden", className)}
+      {...props}
+    />
+  );
+}
+
+export function ScrollXCarouselWrap({
+  className,
+  style,
+  xRagnge = ["0%", "-60%"],
+  ...props
+}: HTMLMotionProps<"div"> & { xRagnge?: [string, string] }) {
+  const { scrollYProgress } = useScrollXCarousel();
+  const xRaw = useTransform(scrollYProgress, [0, 1], xRagnge);
+  const x = useSpring(xRaw, { stiffness: 120, damping: 24, mass: 0.35 });
+
+  return (
+    <motion.div
+      className={cn("w-fit", className)}
+      style={{ x, willChange: "transform", ...style }}
+      {...props}
+    />
+  );
+}
+
+export function ScrollXCarouselProgress({
+  className,
+  style,
+  progressStyle,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement> & { progressStyle?: string }) {
+  const { scrollYProgress } = useScrollXCarousel();
+  const scaleX = useTransform(scrollYProgress, [0, 1], [0, 1]);
+
+  return (
+    <div className={cn("max-w-screen overflow-hidden", className)} {...props}>
+      <motion.div
+        className={cn("origin-left", progressStyle)}
+        style={{ scaleX, ...style }}
+      />
+    </div>
+  );
+}

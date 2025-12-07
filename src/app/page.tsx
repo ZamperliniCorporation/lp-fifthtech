@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import { Hero } from "../sections/hero";
+import { Services } from "../sections/services";
 import About from "../sections/about";
 import { NavBar } from "../components/ui/tubelight-navbar";
 
@@ -118,9 +119,7 @@ export default function Home() {
 
       <About people={people} />
 
-      <section id="servicos" className="mx-auto max-w-6xl px-6 py-24">
-        ...
-      </section>
+      <Services />
 
       <section id="contato" className="mx-auto max-w-6xl px-6 py-24">
         ...
