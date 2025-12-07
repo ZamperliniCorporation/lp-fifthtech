@@ -44,8 +44,9 @@ export default function Home() {
       <NavBar items={navItems} />
 
       <Hero
-        title="Produtos digitais que destravam receita e eficiência"
+        title="Simples pra operar. Forte pra escalar."
         subtitle="Arquitetamos software, automações e integrações de ponta a ponta para que sua operação rode sem atritos, com velocidade, governança e experiência premium para clientes e times."
+        titleClassName="text-3xl sm:text-4xl md:text-5xl lg:text-6xl"
         actions={[
           { label: "Planejar meu próximo ciclo", href: "#contato", variant: "default" },
           { label: "Ver como entregamos", href: "#servicos", variant: "outline" },
