@@ -67,7 +67,7 @@ export function ScrollXCarouselWrap({
 }: HTMLMotionProps<"div"> & { xRagnge?: [string, string] }) {
   const { scrollYProgress } = useScrollXCarousel();
   const xRaw = useTransform(scrollYProgress, [0, 1], xRagnge);
-  const x = useSpring(xRaw, { stiffness: 120, damping: 24, mass: 0.35 });
+  const x = useSpring(xRaw, { stiffness: 90, damping: 20, mass: 0.35 });
 
   return (
     <motion.div
