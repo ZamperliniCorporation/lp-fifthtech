@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useMemo, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
@@ -58,7 +58,7 @@ function FAQHeader({ title, subtitle }: { title: string; subtitle: string }) {
         {subtitle}
       </span>
 
-      <h2 className="text-balance text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+      <h2 className="text-balance text-3xl font-semibold tracking-tight font-tech sm:text-4xl">
         {title}
       </h2>
 

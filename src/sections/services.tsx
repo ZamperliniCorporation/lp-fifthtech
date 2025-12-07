@@ -1,7 +1,7 @@
 ﻿"use client";
 
 import * as React from "react";
-import { motion, useAnimation, type Variants, type Transition } from "framer-motion";
+import { motion, useAnimation, type Variants } from "framer-motion";
 
 import {
   ScrollXCarousel,
@@ -38,7 +38,7 @@ const SLIDES: Slide[] = [
   },
   {
     id: "ft-apps",
-    title: "Aplicativos (MVP à escala)",
+    title: "Aplicativos (MVP a escala)",
     description:
       "Apps prontos para validar e escalar: UX fluida, integrações confiáveis e base sólida para crescer sem retrabalho.",
     services: ["MVP", "UI/UX", "Integrações", "Publicação"],
@@ -126,7 +126,7 @@ export function Services() {
         >
           <p className="text-xs uppercase tracking-[0.22em] text-white/50">Serviços</p>
 
-          <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+          <h2 className="mt-4 text-3xl font-semibold tracking-tight font-tech sm:text-4xl">
             O que a FifthTech entrega.
           </h2>
 

@@ -28,7 +28,7 @@ export function CTASection() {
           <div className="relative z-10 flex flex-col items-center text-center">
             <p className="text-xs uppercase tracking-[0.22em] text-white/50">Vamos conversar</p>
 
-            <h3 className="mt-4 text-balance text-3xl font-semibold tracking-tight text-white sm:text-4xl">
+            <h3 className="mt-4 text-balance text-3xl font-semibold tracking-tight font-tech sm:text-4xl">
               Planejamos, construímos e evoluímos rápido mantendo padrão premium e previsibilidade.
             </h3>
 

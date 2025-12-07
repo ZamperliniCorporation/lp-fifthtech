@@ -37,3 +37,39 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+.font-tech {
+  font-family: var(--font-tech), var(--font-geist-sans), system-ui, -apple-system, "Segoe UI", sans-serif;
+  letter-spacing: -0.015em;
+}
+
+@keyframes title-shimmer {
+  0% {
+    background-position: 200% 50%;
+  }
+  100% {
+    background-position: -200% 50%;
+  }
+}
+
+.title-shimmer {
+  background-image: linear-gradient(120deg, rgba(255,255,255,0.95) 0%, #c7f4ff 20%, rgba(255,255,255,0.95) 40%, rgba(255,255,255,0.95) 60%, #c7f4ff 80%, rgba(255,255,255,0.95) 100%);
+  background-size: 200% 100%;
+  animation: title-shimmer 3s linear infinite;
+}
+
+
+@keyframes caret-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.animate-caret-blink {
+  animation: caret-blink 1s steps(1, end) infinite;
+}
