@@ -4,12 +4,13 @@ import * as React from "react";
 import { Hero } from "../sections/hero";
 import { Services } from "../sections/services";
 import About from "../sections/about";
+import { FaqSection } from "../sections/faq";
+import { CTASection } from "../sections/cta";
 import { NavBar } from "../components/ui/tubelight-navbar";
 
 import { ForwardRefExoticComponent, RefAttributes } from "react";
 import { LucideProps } from "lucide-react";
 
-// Adapt icons to match the expected ForwardRefExoticComponent<...> signature from NavBar
 const HomeIcon: ForwardRefExoticComponent<
   Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>
 > = React.forwardRef<SVGSVGElement, LucideProps>((props, ref) => (
@@ -61,46 +62,17 @@ export default function Home() {
     { name: "Início", url: "#topo", icon: HomeIcon },
     { name: "Sobre", url: "#sobre", icon: InfoIcon },
     { name: "Serviços", url: "#servicos", icon: SparkIcon },
+    { name: "FAQ", url: "#faq", icon: InfoIcon },
     { name: "Contato", url: "#contato", icon: MailIcon },
   ];
 
   const people = [
-    {
-      id: 1,
-      name: "Gustavo Zamperlini",
-      designation: "CEO and CTO",
-      image: "/images/team/gustavo.jpg",
-    },
-    {
-      id: 2,
-      name: "Davi Silva",
-      designation: "COO",
-      image: "/images/team/Davi.jpg",
-    },
-    {
-      id: 3,
-      name: "Wendel Cinelli",
-      designation: "Back-end developer",
-      image: "/images/team/coxa.jpg",
-    },
-    {
-      id: 4,
-      name: "Gustavo Duarte",
-      designation: "Front-end developer",
-      image: "/images/team/negao.jpg",
-    },
-    {
-      id: 5,
-      name: "Lucas Silva",
-      designation: "Automações",
-      image: "/images/team/Lucas.jpg",
-    },
-    {
-      id: 6,
-      name: "Pedro Henrique",
-      designation: "Marketing",
-      image: "/images/team/PH.jpg",
-    },
+    { id: 1, name: "Gustavo Zamperlini", designation: "CEO and CTO", image: "/images/team/gustavo.jpg" },
+    { id: 2, name: "Davi Silva", designation: "COO", image: "/images/team/Davi.jpg" },
+    { id: 3, name: "Wendel Cinelli", designation: "Back-end developer", image: "/images/team/coxa.jpg" },
+    { id: 4, name: "Gustavo Duarte", designation: "Front-end developer", image: "/images/team/negao.jpg" },
+    { id: 5, name: "Lucas Silva", designation: "Automações", image: "/images/team/Lucas.jpg" },
+    { id: 6, name: "Pedro Henrique", designation: "Marketing", image: "/images/team/PH.jpg" },
   ];
 
   return (
@@ -121,8 +93,10 @@ export default function Home() {
 
       <Services />
 
+      <FaqSection />
+
       <section id="contato" className="mx-auto max-w-6xl px-6 py-24">
-        ...
+        <CTASection />
       </section>
     </main>
   );
