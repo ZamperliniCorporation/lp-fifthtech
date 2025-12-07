@@ -9,8 +9,10 @@ import {
   useSpring,
   useTransform,
 } from "framer-motion";
+
 import { cn } from "../lib/utils";
 import { Button } from "../components/ui/button";
+import { DottedSurface } from "../components/ui/dotted-surface"; // <- novo background
 
 type HeroAction = {
   label: string;
@@ -59,18 +61,22 @@ const Hero = React.forwardRef<HTMLElement, HeroProps>(
     // posição do mouse para spotlight (iniciando no centro para já aparecer luz)
     const mx = useMotionValue(0);
     const my = useMotionValue(0);
-    const sx = useSpring(mx, { stiffness: 110, damping: 22, mass: 0.25 });
-    const sy = useSpring(my, { stiffness: 110, damping: 22, mass: 0.25 });
 
-    // parallax
+    // suaviza o follow do spotlight (um pouco mais "butter")
+    const sx = useSpring(mx, { stiffness: 95, damping: 24, mass: 0.28 });
+    const sy = useSpring(my, { stiffness: 95, damping: 24, mass: 0.28 });
+
+    // parallax (mais clean, menos amplitude)
     const nx = useMotionValue(0);
     const ny = useMotionValue(0);
-    const snx = useSpring(nx, { stiffness: 90, damping: 26, mass: 0.25 });
-    const sny = useSpring(ny, { stiffness: 90, damping: 26, mass: 0.25 });
-    const titleX = useTransform(snx, [-0.5, 0.5], [-6, 6]);
-    const titleY = useTransform(sny, [-0.5, 0.5], [-4, 4]);
-    const subtitleX = useTransform(snx, [-0.5, 0.5], [-4, 4]);
-    const subtitleY = useTransform(sny, [-0.5, 0.5], [-3, 3]);
+
+    const snx = useSpring(nx, { stiffness: 70, damping: 26, mass: 0.35 });
+    const sny = useSpring(ny, { stiffness: 70, damping: 26, mass: 0.35 });
+
+    const titleX = useTransform(snx, [-0.5, 0.5], [-5, 5]);
+    const titleY = useTransform(sny, [-0.5, 0.5], [-3, 3]);
+    const subtitleX = useTransform(snx, [-0.5, 0.5], [-3, 3]);
+    const subtitleY = useTransform(sny, [-0.5, 0.5], [-2, 2]);
 
     // drift sutil para o cone/spotlight "respirar"
     const drift = useMotionValue(0);
@@ -79,7 +85,7 @@ const Hero = React.forwardRef<HTMLElement, HeroProps>(
       const start = performance.now();
       const loop = (t: number) => {
         const s = (t - start) / 1000;
-        drift.set(Math.sin(s * 0.9) * 18); // 18px drift
+        drift.set(Math.sin(s * 0.9) * 18);
         raf = requestAnimationFrame(loop);
       };
       raf = requestAnimationFrame(loop);
@@ -93,8 +99,10 @@ const Hero = React.forwardRef<HTMLElement, HeroProps>(
         const rect = e.currentTarget.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
+
         mx.set(x);
         my.set(y);
+
         if (rafRef.current) cancelAnimationFrame(rafRef.current);
         rafRef.current = requestAnimationFrame(() => {
           nx.set(x / rect.width - 0.5);
@@ -116,10 +124,10 @@ const Hero = React.forwardRef<HTMLElement, HeroProps>(
     }, []);
 
     const spotlight = useMotionTemplate`
-      radial-gradient(640px circle at ${sx}px ${sy}px, rgba(255,255,255,.20), transparent 60%)
+      radial-gradient(660px circle at ${sx}px ${sy}px, rgba(255,255,255,.22), transparent 60%)
     `;
     const ambient = useMotionTemplate`
-      radial-gradient(900px circle at calc(${sx}px + ${drift}px) 10%, rgba(255,255,255,.14), transparent 60%)
+      radial-gradient(980px circle at calc(${sx}px + ${drift}px) 10%, rgba(255,255,255,.14), transparent 62%)
     `;
 
     // centraliza luz inicial para não ficar invisível antes do primeiro movimento
@@ -141,25 +149,25 @@ const Hero = React.forwardRef<HTMLElement, HeroProps>(
         {/* Base */}
         <div className="absolute inset-0 z-0 bg-black" />
 
-        {/* Lamp cone */}
-        <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 z-10 h-[520px] w-[900px]">
+        {/* DottedSurface (Three.js) - background clean (sem grid) */}
+        <DottedSurface className="z-[5] opacity-55" />
+
+        {/* Lamp cone (um pouco mais realista: centro mais forte) */}
+        <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 z-10 h-[560px] w-[980px]">
           <div
-            className="absolute inset-0 opacity-70 blur-2xl"
+            className="absolute inset-0 opacity-75 blur-2xl"
             style={{
-              clipPath: "polygon(50% 0%, 52% 0%, 78% 100%, 22% 100%)",
+              clipPath: "polygon(50% 0%, 51.6% 0%, 77.5% 100%, 22.5% 100%)",
               background:
-                "radial-gradient(closest-side at 50% 0%, rgba(255,255,255,0.35), rgba(255,255,255,0.10) 45%, transparent 78%)",
+                "radial-gradient(closest-side at 50% 0%, rgba(255,255,255,0.42), rgba(255,255,255,0.12) 48%, transparent 78%)",
             }}
           />
-          {/* Hotspot da lampada */}
-          <div className="absolute left-1/2 top-[-80px] h-72 w-[52rem] -translate-x-1/2 rounded-full bg-white/18 blur-3xl" />
-          <div className="absolute left-1/2 top-[-40px] h-24 w-[28rem] -translate-x-1/2 rounded-full bg-white/18 blur-2xl" />
+          {/* Hotspot da lâmpada */}
+          <div className="absolute left-1/2 top-[-90px] h-80 w-[56rem] -translate-x-1/2 rounded-full bg-white/18 blur-3xl" />
+          <div className="absolute left-1/2 top-[-48px] h-24 w-[30rem] -translate-x-1/2 rounded-full bg-white/18 blur-2xl" />
         </div>
 
-        {/* Grid sutil */}
-        <div className="absolute inset-0 z-10 opacity-25 [background-image:linear-gradient(to_right,rgba(255,255,255,.06)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,.06)_1px,transparent_1px)] [background-size:90px_90px] [mask-image:radial-gradient(ellipse_at_center,black_45%,transparent_72%)]" />
-
-        {/* Spotlight mouse */}
+        {/* Spotlight mouse + Ambient drift */}
         <motion.div
           style={{ backgroundImage: spotlight }}
           className="pointer-events-none absolute inset-0 z-20"
@@ -169,7 +177,7 @@ const Hero = React.forwardRef<HTMLElement, HeroProps>(
           className="pointer-events-none absolute inset-0 z-20 opacity-70"
         />
 
-        {/* Vignette */}
+        {/* Vignette (segura contraste do texto) */}
         <div className="pointer-events-none absolute inset-0 z-30 bg-[radial-gradient(1200px_circle_at_50%_35%,transparent_30%,rgba(0,0,0,0.92)_78%)]" />
 
         {/* Grain */}
@@ -210,7 +218,7 @@ const Hero = React.forwardRef<HTMLElement, HeroProps>(
           )}
 
           <p className="mt-12 text-xs text-white/35">
-            Sistemas sob medida | Automacao | Integracoes | Dashboards
+            Sistemas sob medida | Automação | Integrações | Dashboards
           </p>
         </div>
       </section>
