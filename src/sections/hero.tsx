@@ -12,7 +12,7 @@ import {
 
 import { cn } from "../lib/utils";
 import { Button } from "../components/ui/button";
-import { DottedSurface } from "../components/ui/dotted-surface"; // <- novo background
+import { DottedSurface } from "../components/ui/dotted-surface";
 
 type HeroAction = {
   label: string;
@@ -62,30 +62,32 @@ const Hero = React.forwardRef<HTMLElement, HeroProps>(
     const mx = useMotionValue(0);
     const my = useMotionValue(0);
 
-    // suaviza o follow do spotlight (um pouco mais "butter")
-    const sx = useSpring(mx, { stiffness: 95, damping: 24, mass: 0.28 });
-    const sy = useSpring(my, { stiffness: 95, damping: 24, mass: 0.28 });
+    // follow do spotlight (mais suave)
+    const sx = useSpring(mx, { stiffness: 90, damping: 26, mass: 0.30 });
+    const sy = useSpring(my, { stiffness: 90, damping: 26, mass: 0.30 });
 
-    // parallax (mais clean, menos amplitude)
+    // parallax (mais fluido e menor amplitude)
     const nx = useMotionValue(0);
     const ny = useMotionValue(0);
 
-    const snx = useSpring(nx, { stiffness: 70, damping: 26, mass: 0.35 });
-    const sny = useSpring(ny, { stiffness: 70, damping: 26, mass: 0.35 });
+    // >>> Ajuste chave: spring mais "macia" (menos travado)
+    const snx = useSpring(nx, { stiffness: 55, damping: 22, mass: 0.45 });
+    const sny = useSpring(ny, { stiffness: 55, damping: 22, mass: 0.45 });
 
-    const titleX = useTransform(snx, [-0.5, 0.5], [-5, 5]);
-    const titleY = useTransform(sny, [-0.5, 0.5], [-3, 3]);
-    const subtitleX = useTransform(snx, [-0.5, 0.5], [-3, 3]);
-    const subtitleY = useTransform(sny, [-0.5, 0.5], [-2, 2]);
+    // amplitude menor = mais clean
+    const titleX = useTransform(snx, [-0.5, 0.5], [-3.5, 3.5]);
+    const titleY = useTransform(sny, [-0.5, 0.5], [-2.2, 2.2]);
+    const subtitleX = useTransform(snx, [-0.5, 0.5], [-2.2, 2.2]);
+    const subtitleY = useTransform(sny, [-0.5, 0.5], [-1.6, 1.6]);
 
-    // drift sutil para o cone/spotlight "respirar"
+    // drift sutil para o cone/spotlight "respirar" (menos intenso)
     const drift = useMotionValue(0);
     React.useEffect(() => {
       let raf = 0;
       const start = performance.now();
       const loop = (t: number) => {
         const s = (t - start) / 1000;
-        drift.set(Math.sin(s * 0.9) * 18);
+        drift.set(Math.sin(s * 0.9) * 12); // era 18, agora 12 (mais sutil)
         raf = requestAnimationFrame(loop);
       };
       raf = requestAnimationFrame(loop);
@@ -112,10 +114,14 @@ const Hero = React.forwardRef<HTMLElement, HeroProps>(
       [mx, my, nx, ny]
     );
 
+    // reset mais suave (pra não "quebrar" quando sai do mouse)
     const onLeave = React.useCallback(() => {
       nx.set(0);
       ny.set(0);
-    }, [nx, ny]);
+      // opcional: recentraliza o spotlight suavemente
+      mx.set((typeof window !== "undefined" ? window.innerWidth : 0) / 2);
+      my.set((typeof window !== "undefined" ? window.innerHeight : 0) / 2);
+    }, [nx, ny, mx, my]);
 
     React.useEffect(() => {
       return () => {
@@ -123,11 +129,14 @@ const Hero = React.forwardRef<HTMLElement, HeroProps>(
       };
     }, []);
 
+    // >>> Cursor menos espalhado: raio menor + alpha menor
     const spotlight = useMotionTemplate`
-      radial-gradient(660px circle at ${sx}px ${sy}px, rgba(255,255,255,.22), transparent 60%)
+      radial-gradient(520px circle at ${sx}px ${sy}px, rgba(255,255,255,.16), transparent 62%)
     `;
+
+    // ambient um pouco mais suave
     const ambient = useMotionTemplate`
-      radial-gradient(980px circle at calc(${sx}px + ${drift}px) 10%, rgba(255,255,255,.14), transparent 62%)
+      radial-gradient(860px circle at calc(${sx}px + ${drift}px) 10%, rgba(255,255,255,.10), transparent 64%)
     `;
 
     // centraliza luz inicial para não ficar invisível antes do primeiro movimento
@@ -149,22 +158,24 @@ const Hero = React.forwardRef<HTMLElement, HeroProps>(
         {/* Base */}
         <div className="absolute inset-0 z-0 bg-black" />
 
-        {/* DottedSurface (Three.js) - background clean (sem grid) */}
+        {/* DottedSurface (Three.js) */}
         <DottedSurface className="z-[5] opacity-55" />
 
-        {/* Lamp cone (um pouco mais realista: centro mais forte) */}
+        {/* Lamp cone (mais sutil) */}
         <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 z-10 h-[560px] w-[980px]">
           <div
-            className="absolute inset-0 opacity-75 blur-2xl"
+            className="absolute inset-0 blur-2xl"
             style={{
               clipPath: "polygon(50% 0%, 51.6% 0%, 77.5% 100%, 22.5% 100%)",
+              // menos “branco forte” no cone
               background:
-                "radial-gradient(closest-side at 50% 0%, rgba(255,255,255,0.42), rgba(255,255,255,0.12) 48%, transparent 78%)",
+                "radial-gradient(closest-side at 50% 0%, rgba(255,255,255,0.30), rgba(255,255,255,0.08) 52%, transparent 80%)",
+              opacity: 0.65, // era 0.75+ no conjunto, agora mais sutil
             }}
           />
-          {/* Hotspot da lâmpada */}
-          <div className="absolute left-1/2 top-[-90px] h-80 w-[56rem] -translate-x-1/2 rounded-full bg-white/18 blur-3xl" />
-          <div className="absolute left-1/2 top-[-48px] h-24 w-[30rem] -translate-x-1/2 rounded-full bg-white/18 blur-2xl" />
+          {/* Hotspot da lâmpada (também mais sutil) */}
+          <div className="absolute left-1/2 top-[-90px] h-80 w-[56rem] -translate-x-1/2 rounded-full bg-white/12 blur-3xl" />
+          <div className="absolute left-1/2 top-[-48px] h-24 w-[30rem] -translate-x-1/2 rounded-full bg-white/12 blur-2xl" />
         </div>
 
         {/* Spotlight mouse + Ambient drift */}
@@ -186,7 +197,7 @@ const Hero = React.forwardRef<HTMLElement, HeroProps>(
         {/* Content */}
         <div className="relative z-50 mx-auto flex min-h-screen max-w-6xl flex-col items-center justify-center px-6 text-center">
           <motion.h1
-            style={{ x: titleX, y: titleY }}
+            style={{ x: titleX, y: titleY, willChange: "transform" as any }}
             className={cn(
               "text-balance text-4xl font-semibold tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl",
               titleClassName
@@ -197,7 +208,7 @@ const Hero = React.forwardRef<HTMLElement, HeroProps>(
 
           {subtitle && (
             <motion.p
-              style={{ x: subtitleX, y: subtitleY }}
+              style={{ x: subtitleX, y: subtitleY, willChange: "transform" as any }}
               className={cn(
                 "mt-5 max-w-3xl text-pretty text-base text-white/60 sm:text-lg md:text-xl",
                 subtitleClassName
