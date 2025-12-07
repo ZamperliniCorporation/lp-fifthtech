@@ -88,16 +88,14 @@ export function NavBar({ items, className }: NavBarProps) {
               href={item.url}
               onClick={() => setActiveTab(item.name)}
               className={cn(
-                "relative rounded-full px-5 py-2 text-sm font-semibold transition-all duration-200",
+                "relative flex size-11 items-center justify-center rounded-full text-sm font-semibold transition-all duration-200",
                 "text-white/70 hover:text-white hover:-translate-y-[1px]",
                 "focus:outline-none focus-visible:ring-2 focus-visible:ring-white/35 focus-visible:ring-offset-0",
                 isActive && "text-white"
               )}
             >
-              <span className="hidden md:inline">{item.name}</span>
-              <span className="md:hidden inline-flex">
-                <Icon size={18} strokeWidth={2.5} />
-              </span>
+              <Icon size={18} strokeWidth={2.5} />
+              <span className="sr-only">{item.name}</span>
 
               {isActive && (
                 <motion.div

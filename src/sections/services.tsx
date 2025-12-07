@@ -133,7 +133,7 @@ export function Services() {
         </motion.div>
       </div>
 
-      <ScrollXCarousel className="mt-10 h-[130vh]">
+      <ScrollXCarousel className="mt-10 h-[110vh] md:h-[130vh]">
         <ScrollXCarouselContainer className="flex h-dvh flex-col place-content-center gap-8 py-14">
           <div className="pointer-events-none absolute inset-[0_auto_0_0] z-10 h-[103%] w-[12vw] bg-[linear-gradient(90deg,_black_35%,_transparent)]" />
           <div className="pointer-events-none absolute inset-[0_0_0_auto] z-10 h-[103%] w-[15vw] bg-[linear-gradient(270deg,_black_35%,_transparent)]" />
@@ -154,13 +154,13 @@ export function Services() {
           >
             <ScrollXCarouselWrap
               xRagnge={["0%", "-52%"]}
-              className="flex flex-4/5 space-x-8 px-[6vw]"
+              className="flex flex-4/5 space-x-5 px-4 sm:px-8 md:space-x-8 md:px-[6vw]"
             >
               {SLIDES.map((slide) => (
                 <motion.div key={slide.id} variants={cardFade}>
                   <CardHoverReveal
                     className={cn(
-                      "min-w-[78vw] md:min-w-[42vw] xl:min-w-[32vw]",
+                      "min-w-[88vw] sm:min-w-[70vw] md:min-w-[50vw] lg:min-w-[38vw] xl:min-w-[32vw]",
                       "rounded-2xl border border-white/10 bg-white/5",
                       "shadow-2xl shadow-black/50"
                     )}
@@ -169,14 +169,14 @@ export function Services() {
                       <img
                         alt={slide.title}
                         src={slide.imageUrl}
-                        className="size-full aspect-[4/5] object-cover"
+                        className="size-full aspect-[4/5] object-cover md:aspect-[3/4]"
                       />
 
                       <div className="absolute inset-0 bg-[radial-gradient(900px_circle_at_50%_18%,rgba(255,255,255,0.16),transparent_55%)]" />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/10 to-black/10" />
                     </CardHoverRevealMain>
 
-                    <CardHoverRevealContent className="space-y-4 rounded-2xl border border-white/10 bg-[rgba(0,0,0,.55)] p-5 backdrop-blur-3xl">
+                    <CardHoverRevealContent className="space-y-4 rounded-2xl border border-white/10 bg-[rgba(0,0,0,.65)] p-5 backdrop-blur-3xl md:max-w-[460px]">
                       <div className="flex items-start justify-between gap-3">
                         <div className="space-y-1">
                           <h3 className="text-white font-semibold">

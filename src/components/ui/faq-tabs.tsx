@@ -82,37 +82,39 @@ function FAQTabs({
   setSelected: (v: string) => void;
 }) {
   return (
-    <div className="relative z-10 mx-auto mt-10 flex max-w-6xl flex-wrap items-center justify-center gap-3">
-      {Object.entries(categories).map(([key, label]) => {
-        const isActive = selected === key;
+    <div className="relative z-10 mx-auto mt-10 w-full max-w-6xl">
+      <div className="flex w-full flex-nowrap items-center gap-3 overflow-x-auto pb-2 md:flex-wrap md:justify-center md:overflow-visible">
+        {Object.entries(categories).map(([key, label]) => {
+          const isActive = selected === key;
 
-        return (
-          <button
-            key={key}
-            onClick={() => setSelected(key)}
-            className={cn(
-              "relative overflow-hidden whitespace-nowrap rounded-full border px-4 py-2 text-sm font-semibold transition-colors duration-300",
-              isActive
-                ? "border-white/20 text-black"
-                : "border-white/10 bg-transparent text-white/65 hover:text-white"
-            )}
-          >
-            <span className="relative z-10">{label}</span>
-
-            <AnimatePresence initial={false}>
-              {isActive && (
-                <motion.span
-                  initial={{ y: "110%" }}
-                  animate={{ y: "0%" }}
-                  exit={{ y: "110%" }}
-                  transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
-                  className="absolute inset-0 z-0 bg-white"
-                />
+          return (
+            <button
+              key={key}
+              onClick={() => setSelected(key)}
+              className={cn(
+                "relative shrink-0 overflow-hidden whitespace-nowrap rounded-full border px-4 py-2 text-sm font-semibold transition-colors duration-300",
+                isActive
+                  ? "border-white/20 text-black"
+                  : "border-white/10 bg-transparent text-white/65 hover:text-white"
               )}
-            </AnimatePresence>
-          </button>
-        );
-      })}
+            >
+              <span className="relative z-10">{label}</span>
+
+              <AnimatePresence initial={false}>
+                {isActive && (
+                  <motion.span
+                    initial={{ y: "110%" }}
+                    animate={{ y: "0%" }}
+                    exit={{ y: "110%" }}
+                    transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                    className="absolute inset-0 z-0 bg-white"
+                  />
+                )}
+              </AnimatePresence>
+            </button>
+          );
+        })}
+      </div>
     </div>
   );
 }

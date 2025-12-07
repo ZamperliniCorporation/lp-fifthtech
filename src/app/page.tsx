@@ -1,8 +1,16 @@
 "use client";
 
 import * as React from "react";
-import { ForwardRefExoticComponent, RefAttributes } from "react";
-import { LucideProps, Instagram, Linkedin, MessageCircle } from "lucide-react";
+import {
+  Instagram,
+  Linkedin,
+  MessageCircle,
+  Home as HomeIcon,
+  Users,
+  Sparkles,
+  HelpCircle,
+  Mail,
+} from "lucide-react";
 
 import { Hero } from "../sections/hero";
 import { Services } from "../sections/services";
@@ -12,59 +20,13 @@ import { CTASection } from "../sections/cta";
 import { NavBar } from "../components/ui/tubelight-navbar";
 import { Footer } from "../components/ui/footer";
 
-const HomeIcon: ForwardRefExoticComponent<
-  Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>
-> = React.forwardRef<SVGSVGElement, LucideProps>((props, ref) => (
-  <svg ref={ref} viewBox="0 0 24 24" fill="none" stroke="currentColor" {...props}>
-    <path d="M3 11.5 12 4l9 7.5" />
-    <path d="M5 10.5V20h14v-9.5" />
-  </svg>
-));
-HomeIcon.displayName = "HomeIcon";
-
-const InfoIcon: ForwardRefExoticComponent<
-  Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>
-> = React.forwardRef<SVGSVGElement, LucideProps>((props, ref) => (
-  <svg ref={ref} viewBox="0 0 24 24" fill="none" stroke="currentColor" {...props}>
-    <circle cx="12" cy="12" r="10" />
-    <path d="M12 10v6" />
-    <path d="M12 7h.01" />
-  </svg>
-));
-InfoIcon.displayName = "InfoIcon";
-
-const SparkIcon: ForwardRefExoticComponent<
-  Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>
-> = React.forwardRef<SVGSVGElement, LucideProps>((props, ref) => (
-  <svg ref={ref} viewBox="0 0 24 24" fill="none" stroke="currentColor" {...props}>
-    <path d="M12 3v6" />
-    <path d="m16 7-4 2" />
-    <path d="m8 7 4 2" />
-    <path d="M6 13h12" />
-    <path d="m16 17-4-2" />
-    <path d="m8 17 4-2" />
-    <path d="M12 15v6" />
-  </svg>
-));
-SparkIcon.displayName = "SparkIcon";
-
-const MailIcon: ForwardRefExoticComponent<
-  Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>
-> = React.forwardRef<SVGSVGElement, LucideProps>((props, ref) => (
-  <svg ref={ref} viewBox="0 0 24 24" fill="none" stroke="currentColor" {...props}>
-    <rect x="3" y="5" width="18" height="14" rx="2" />
-    <path d="m3 7 9 6 9-6" />
-  </svg>
-));
-MailIcon.displayName = "MailIcon";
-
 export default function Home() {
   const navItems = [
-    { name: "Início", url: "#topo", icon: HomeIcon },
-    { name: "Sobre", url: "#sobre", icon: InfoIcon },
-    { name: "Serviços", url: "#servicos", icon: SparkIcon },
-    { name: "FAQ", url: "#faq", icon: InfoIcon },
-    { name: "Contato", url: "#contato", icon: MailIcon },
+    { name: "Inicio", url: "#topo", icon: HomeIcon },
+    { name: "Sobre", url: "#sobre", icon: Users },
+    { name: "Servicos", url: "#servicos", icon: Sparkles },
+    { name: "FAQ", url: "#faq", icon: HelpCircle },
+    { name: "Contato", url: "#contato", icon: Mail },
   ];
 
   const people = [
@@ -72,7 +34,7 @@ export default function Home() {
     { id: 2, name: "Davi Silva", designation: "COO", image: "/images/team/Davi.jpg" },
     { id: 3, name: "Wendel Cinelli", designation: "Back-end developer", image: "/images/team/coxa.jpg" },
     { id: 4, name: "Gustavo Duarte", designation: "Front-end developer", image: "/images/team/negao.jpg" },
-    { id: 5, name: "Lucas Silva", designation: "Automações", image: "/images/team/Lucas.jpg" },
+    { id: 5, name: "Lucas Silva", designation: "Automacoes", image: "/images/team/Lucas.jpg" },
     { id: 6, name: "Pedro Henrique", designation: "Marketing", image: "/images/team/PH.jpg" },
   ];
 
@@ -81,8 +43,8 @@ export default function Home() {
       <NavBar items={navItems} />
 
       <Hero
-        title="Bem-vindo à Fifth Tech"
-        subtitle="Modernizamos processos com Softwares sob medida, automações e integrações com padrão premium e foco em eficiência real."
+        title="Bem-vindo a Fifth Tech"
+        subtitle="Modernizamos processos com Softwares sob medida, automacoes e integracoes com padrao premium e foco em eficiencia real."
         actions={[
           { label: "Falar conosco", href: "#contato", variant: "default" },
           { label: "Ver entregas", href: "#servicos", variant: "outline" },
@@ -113,9 +75,9 @@ export default function Home() {
           { icon: <MessageCircle size={16} />, href: "https://wa.me/", label: "WhatsApp" },
         ]}
         mainLinks={[
-          { href: "#topo", label: "Início" },
+          { href: "#topo", label: "Inicio" },
           { href: "#sobre", label: "Sobre" },
-          { href: "#servicos", label: "Serviços" },
+          { href: "#servicos", label: "Servicos" },
           { href: "#faq", label: "FAQ" },
           { href: "#contato", label: "Contato" },
         ]}
@@ -124,7 +86,7 @@ export default function Home() {
           { href: "#", label: "Privacidade" },
         ]}
         copyright={{
-          text: "© 2025 Fifth Tech. Todos os direitos reservados.",
+          text: "(c) 2025 Fifth Tech. Todos os direitos reservados.",
         }}
       />
     </main>
