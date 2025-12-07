@@ -1,15 +1,16 @@
 "use client";
 
 import * as React from "react";
+import { ForwardRefExoticComponent, RefAttributes } from "react";
+import { LucideProps, Instagram, Linkedin, MessageCircle } from "lucide-react";
+
 import { Hero } from "../sections/hero";
 import { Services } from "../sections/services";
 import About from "../sections/about";
 import { FaqSection } from "../sections/faq";
 import { CTASection } from "../sections/cta";
 import { NavBar } from "../components/ui/tubelight-navbar";
-
-import { ForwardRefExoticComponent, RefAttributes } from "react";
-import { LucideProps } from "lucide-react";
+import { Footer } from "../components/ui/footer";
 
 const HomeIcon: ForwardRefExoticComponent<
   Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>
@@ -98,6 +99,34 @@ export default function Home() {
       <section id="contato" className="mx-auto max-w-6xl px-6 py-24">
         <CTASection />
       </section>
+
+      <Footer
+        brandName="Fifth Tech"
+        logo={
+          <div className="grid size-10 place-items-center rounded-xl bg-white text-black font-bold">
+            FT
+          </div>
+        }
+        socialLinks={[
+          { icon: <Instagram size={16} />, href: "https://instagram.com", label: "Instagram" },
+          { icon: <Linkedin size={16} />, href: "https://linkedin.com", label: "LinkedIn" },
+          { icon: <MessageCircle size={16} />, href: "https://wa.me/", label: "WhatsApp" },
+        ]}
+        mainLinks={[
+          { href: "#topo", label: "Início" },
+          { href: "#sobre", label: "Sobre" },
+          { href: "#servicos", label: "Serviços" },
+          { href: "#faq", label: "FAQ" },
+          { href: "#contato", label: "Contato" },
+        ]}
+        legalLinks={[
+          { href: "#", label: "Termos" },
+          { href: "#", label: "Privacidade" },
+        ]}
+        copyright={{
+          text: "© 2025 Fifth Tech. Todos os direitos reservados.",
+        }}
+      />
     </main>
   );
 }
