@@ -4,12 +4,14 @@ import * as React from "react";
 import { motion, Variants } from "framer-motion";
 import { cn } from "../../lib/utils";
 
-interface AnimatedTextProps extends React.HTMLAttributes<HTMLDivElement> {
+type MotionDivProps = React.ComponentProps<typeof motion.div>;
+
+interface AnimatedTextProps
+  extends Omit<MotionDivProps, "children" | "ref"> {
   text: string;
   gradientColors?: string;
   gradientAnimationDuration?: number;
   hoverEffect?: boolean;
-  className?: string;
   textClassName?: string;
 }
 
