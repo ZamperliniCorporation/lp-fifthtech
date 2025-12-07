@@ -105,6 +105,15 @@ function useEnterExitAnimation() {
 export function Services() {
   const header = useEnterExitAnimation();
   const cards = useEnterExitAnimation();
+  const [xRange, setXRange] = React.useState<[string, string]>(["0%", "-52%"]);
+
+  React.useEffect(() => {
+    const mq = window.matchMedia("(max-width: 768px)");
+    const update = () => setXRange(mq.matches ? ["0%", "-88%"] : ["0%", "-52%"]);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
 
   return (
     <section id="servicos" className="relative w-full">
@@ -123,7 +132,7 @@ export function Services() {
           </p>
 
           <h2 className="mt-4 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-            O que a Fifth Tech entrega.
+            O que a FifthTech entrega.
           </h2>
 
           <p className="mt-4 max-w-2xl text-white/60">
@@ -133,7 +142,7 @@ export function Services() {
         </motion.div>
       </div>
 
-      <ScrollXCarousel className="mt-10 h-[110vh] md:h-[130vh]">
+      <ScrollXCarousel className="mt-10 h-[150vh] md:h-[130vh]">
         <ScrollXCarouselContainer className="flex h-dvh flex-col place-content-center gap-8 py-14">
           <div className="pointer-events-none absolute inset-[0_auto_0_0] z-10 h-[103%] w-[12vw] bg-[linear-gradient(90deg,_black_35%,_transparent)]" />
           <div className="pointer-events-none absolute inset-[0_0_0_auto] z-10 h-[103%] w-[15vw] bg-[linear-gradient(270deg,_black_35%,_transparent)]" />
@@ -153,14 +162,14 @@ export function Services() {
             onViewportLeave={cards.exit}
           >
             <ScrollXCarouselWrap
-              xRagnge={["0%", "-52%"]}
+              xRagnge={xRange}
               className="flex flex-4/5 space-x-5 px-4 sm:px-8 md:space-x-8 md:px-[6vw]"
             >
               {SLIDES.map((slide) => (
                 <motion.div key={slide.id} variants={cardFade}>
                   <CardHoverReveal
                     className={cn(
-                      "min-w-[88vw] sm:min-w-[70vw] md:min-w-[50vw] lg:min-w-[38vw] xl:min-w-[32vw]",
+                      "min-w-[82vw] sm:min-w-[70vw] md:min-w-[50vw] lg:min-w-[38vw] xl:min-w-[32vw]",
                       "rounded-2xl border border-white/10 bg-white/5",
                       "shadow-2xl shadow-black/50"
                     )}

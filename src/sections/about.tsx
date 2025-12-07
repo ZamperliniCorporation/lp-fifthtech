@@ -59,7 +59,7 @@ export default function About({
             variants={item}
             className="text-xs uppercase tracking-[0.22em] text-white/50"
           >
-            Sobre a Fifth Tech
+            Sobre a FifthTech
           </motion.p>
 
           <motion.h2
@@ -70,7 +70,7 @@ export default function About({
           </motion.h2>
 
           <motion.p variants={item} className="mt-5 text-white/60 leading-relaxed">
-            A Fifth Tech projeta e desenvolve soluções digitais para empresas que
+            A FifthTech projeta e desenvolve soluções digitais para empresas que
             precisam de eficiência real: sistemas internos, automações, integrações,
             dashboards e produtos digitais. Nosso foco é construir rápido, com
             clareza, qualidade e suporte próximo.
@@ -133,3 +133,4 @@ export default function About({
     </section>
   );
 }
+

@@ -20,7 +20,17 @@ interface NavBarProps {
 export function NavBar({ items, className }: NavBarProps) {
   const [activeTab, setActiveTab] = React.useState(items[0]?.name ?? "");
 
-  // ativa pelo scroll (IntersectionObserver) — mais estável
+  React.useEffect(() => {
+    const onScroll = () => {
+      if (window.scrollY < 60 && items[0]) {
+        setActiveTab(items[0].name);
+      }
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [items]);
+
+  // ativa pelo scroll (IntersectionObserver) eh mais estavel
   React.useEffect(() => {
     const hashItems = items.filter((i) => i.url.startsWith("#"));
     const ids = hashItems.map((i) => i.url.slice(1));
@@ -38,15 +48,15 @@ export function NavBar({ items, className }: NavBarProps) {
         const visible = entries.filter((e) => e.isIntersecting);
         if (!visible.length) return;
 
-        // 1) tenta pegar a section mais próxima do "topo útil" da tela
-        // (isso deixa bem consistente quando duas sections ficam visíveis)
+        // 1) tenta pegar a section mais proxima do "topo util" da tela
+        // (isso deixa bem consistente quando duas sections ficam visiveis)
         const targetEntry = visible
           .slice()
           .sort((a, b) => {
             const aTop = Math.abs((a.target as HTMLElement).getBoundingClientRect().top);
             const bTop = Math.abs((b.target as HTMLElement).getBoundingClientRect().top);
 
-            // prioridade: quem está mais perto do topo (menor abs top)
+            // prioridade: quem esta mais perto do topo (menor abs top)
             if (aTop !== bTop) return aTop - bTop;
 
             // desempate: maior ratio
