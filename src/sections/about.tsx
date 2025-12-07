@@ -64,7 +64,7 @@ export default function About({
 
           <motion.h2
             variants={item}
-            className="mt-4 text-3xl font-semibold tracking-tight text-white sm:text-4xl"
+            className="mt-4 text-3xl font-semibold tracking-tight font-tech sm:text-4xl"
           >
             Equipe sênior construindo software sob medida com padrão premium, do diagnóstico à entrega.
           </motion.h2>

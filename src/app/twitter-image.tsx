@@ -9,19 +9,9 @@ export const size = {
 
 export const contentType = "image/png";
 
-function toBase64(buffer: ArrayBuffer) {
-  let binary = "";
-  const bytes = new Uint8Array(buffer);
-  for (let i = 0; i < bytes.byteLength; i++) {
-    binary += String.fromCharCode(bytes[i]);
-  }
-  return btoa(binary);
-}
-
 export default async function TwitterImage() {
-  const logoFile = new URL("../public/images/logo.png", import.meta.url);
-  const logoBuffer = await fetch(logoFile).then((res) => res.arrayBuffer());
-  const logoSrc = `data:image/png;base64,${toBase64(logoBuffer)}`;
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://fifthtech.vercel.app";
+  const logoSrc = `${baseUrl}/images/logo.png`;
 
   return new ImageResponse(
     (
