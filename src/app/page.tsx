@@ -44,7 +44,7 @@ export default function Home() {
       <NavBar items={navItems} />
 
       <Hero
-        title="Simples pra operar. Forte pra escalar."
+        title="Simples para operar. Forte pra escalar."
         subtitle="Arquitetamos software, automações e integrações de ponta a ponta para que sua operação rode sem atritos, com velocidade, governança e experiência premium para clientes e times."
         titleClassName="text-3xl sm:text-4xl md:text-5xl lg:text-6xl"
         actions={[

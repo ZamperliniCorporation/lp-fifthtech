@@ -1,4 +1,4 @@
-import { ImageResponse } from "next/og";
+﻿import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
 
@@ -9,10 +9,23 @@ export const size = {
 
 export const contentType = "image/png";
 
-export default function OpenGraphImage() {
+function toBase64(buffer: ArrayBuffer) {
+  let binary = "";
+  const bytes = new Uint8Array(buffer);
+  for (let i = 0; i < bytes.byteLength; i++) {
+    binary += String.fromCharCode(bytes[i]);
+  }
+  return btoa(binary);
+}
+
+export default async function OpenGraphImage() {
   const title = "FifthTech";
   const subtitle = "Soluções digitais sob medida";
   const url = "fifthtech.vercel.app";
+
+  const logoFile = new URL("../public/images/logo.png", import.meta.url);
+  const logoBuffer = await fetch(logoFile).then((res) => res.arrayBuffer());
+  const logoSrc = `data:image/png;base64,${toBase64(logoBuffer)}`;
 
   return new ImageResponse(
     (
@@ -30,7 +43,6 @@ export default function OpenGraphImage() {
             'ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial',
         }}
       >
-        {/* Glow topo */}
         <div
           style={{
             position: "absolute",
@@ -47,7 +59,6 @@ export default function OpenGraphImage() {
           }}
         />
 
-        {/* Vignette */}
         <div
           style={{
             position: "absolute",
@@ -57,7 +68,6 @@ export default function OpenGraphImage() {
           }}
         />
 
-        {/* Conteúdo */}
         <div
           style={{
             width: 980,
@@ -72,7 +82,6 @@ export default function OpenGraphImage() {
             backdropFilter: "blur(14px)",
           }}
         >
-          {/* Logo */}
           <div
             style={{
               width: 120,
@@ -97,16 +106,9 @@ export default function OpenGraphImage() {
                 opacity: 0.7,
               }}
             />
-            {/* Sua logo em /public/images/logo.png */}
-            <img
-              src="https://fifthtech.vercel.app/images/logo.png"
-              width={84}
-              height={84}
-              style={{ objectFit: "contain", opacity: 0.98 }}
-            />
+            <img src={logoSrc} width={84} height={84} style={{ objectFit: "contain", opacity: 0.98 }} />
           </div>
 
-          {/* Textos */}
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             <div
               style={{
