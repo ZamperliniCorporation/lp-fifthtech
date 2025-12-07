@@ -36,7 +36,7 @@ export function FaqSection() {
 
     tecnologia: [
       {
-        question: "Qual e a stack padrao da Fifth Tech?",
+        question: "Qual e a stack padrao da FifthTech?",
         answer:
           "Stack base: React/Next.js no front-end, React Native para apps, Tailwind CSS para UI. Back-end em Python ou Java conforme o produto. Banco: PostgreSQL com modelagem SQL estruturada. Integracoes via APIs e webhooks.",
       },
@@ -125,3 +125,4 @@ export function FaqSection() {
     </motion.section>
   );
 }
+

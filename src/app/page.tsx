@@ -8,6 +8,7 @@ import {
   Home as HomeIcon,
   Users,
   Sparkles,
+  Wrench,
   HelpCircle,
   Mail,
 } from "lucide-react";
@@ -24,7 +25,7 @@ export default function Home() {
   const navItems = [
     { name: "Inicio", url: "#topo", icon: HomeIcon },
     { name: "Sobre", url: "#sobre", icon: Users },
-    { name: "Servicos", url: "#servicos", icon: Sparkles },
+    { name: "Servicos", url: "#servicos", icon: Wrench },
     { name: "FAQ", url: "#faq", icon: HelpCircle },
     { name: "Contato", url: "#contato", icon: Mail },
   ];
@@ -43,7 +44,7 @@ export default function Home() {
       <NavBar items={navItems} />
 
       <Hero
-        title="Bem-vindo a Fifth Tech"
+        title="Bem-vindo a FifthTech"
         subtitle="Modernizamos processos com Softwares sob medida, automacoes e integracoes com padrao premium e foco em eficiencia real."
         actions={[
           { label: "Falar conosco", href: "#contato", variant: "default" },
@@ -63,7 +64,7 @@ export default function Home() {
       </section>
 
       <Footer
-        brandName="Fifth Tech"
+        brandName="FifthTech"
         logo={
           <div className="grid size-10 place-items-center rounded-xl bg-white text-black font-bold">
             FT
@@ -86,7 +87,7 @@ export default function Home() {
           { href: "#", label: "Privacidade" },
         ]}
         copyright={{
-          text: "(c) 2025 Fifth Tech. Todos os direitos reservados.",
+          text: "(c) 2025 FifthTech. Todos os direitos reservados.",
         }}
       />
     </main>
