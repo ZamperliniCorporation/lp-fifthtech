@@ -8,9 +8,13 @@ import {
   useMotionValue,
   useSpring,
   useTransform,
+  useScroll,
+  useInView,
 } from "framer-motion";
+
 import { cn } from "../lib/utils";
 import { Button } from "../components/ui/button";
+import { DottedSurface } from "../components/ui/dotted-surface";
 
 type HeroAction = {
   label: string;
@@ -27,7 +31,6 @@ type HeroProps = React.HTMLAttributes<HTMLElement> & {
   actionsClassName?: string;
 };
 
-// Garante que sempre entregamos um variant aceito pelo Button
 function mapButtonVariant(variant?: string) {
   switch (variant) {
     case "default":
@@ -56,30 +59,68 @@ const Hero = React.forwardRef<HTMLElement, HeroProps>(
     },
     ref
   ) => {
-    // posição do mouse para spotlight (iniciando no centro para já aparecer luz)
+    const sectionRef = React.useRef<HTMLElement | null>(null);
+
+    const setRefs = React.useCallback(
+      (node: HTMLElement | null) => {
+        sectionRef.current = node;
+        if (!ref) return;
+        if (typeof ref === "function") ref(node);
+        else (ref as React.MutableRefObject<HTMLElement | null>).current = node;
+      },
+      [ref]
+    );
+
+    // ---------- ENTRADA ----------
+    const contentRef = React.useRef<HTMLDivElement | null>(null);
+    const isInView = useInView(contentRef, { once: true, margin: "-20% 0px -35% 0px" });
+
+    // ---------- SCROLL ----------
+    const { scrollYProgress } = useScroll({
+      target: sectionRef,
+      offset: ["start start", "end start"],
+    });
+
+    // Saída do conteúdo
+    const contentOpacityOut = useTransform(scrollYProgress, [0, 0.65], [1, 0]);
+    const contentYOut = useTransform(scrollYProgress, [0, 0.65], [0, 28]);
+    const contentScaleOut = useTransform(scrollYProgress, [0, 0.65], [1, 0.985]);
+
+    // Spotlight “fecha” com o scroll (cinemático)
+    const spotSize = useTransform(scrollYProgress, [0, 0.65], [520, 260]);
+    const spotAlpha = useTransform(scrollYProgress, [0, 0.65], [0.16, 0.06]);
+
+    // Ambient também dá uma apagada leve pra acompanhar
+    const ambSize = useTransform(scrollYProgress, [0, 0.65], [860, 620]);
+    const ambAlpha = useTransform(scrollYProgress, [0, 0.65], [0.10, 0.05]);
+
+    // ---------- Luz / cursor ----------
     const mx = useMotionValue(0);
     const my = useMotionValue(0);
-    const sx = useSpring(mx, { stiffness: 110, damping: 22, mass: 0.25 });
-    const sy = useSpring(my, { stiffness: 110, damping: 22, mass: 0.25 });
+
+    const sx = useSpring(mx, { stiffness: 90, damping: 26, mass: 0.30 });
+    const sy = useSpring(my, { stiffness: 90, damping: 26, mass: 0.30 });
 
     // parallax
     const nx = useMotionValue(0);
     const ny = useMotionValue(0);
-    const snx = useSpring(nx, { stiffness: 90, damping: 26, mass: 0.25 });
-    const sny = useSpring(ny, { stiffness: 90, damping: 26, mass: 0.25 });
-    const titleX = useTransform(snx, [-0.5, 0.5], [-6, 6]);
-    const titleY = useTransform(sny, [-0.5, 0.5], [-4, 4]);
-    const subtitleX = useTransform(snx, [-0.5, 0.5], [-4, 4]);
-    const subtitleY = useTransform(sny, [-0.5, 0.5], [-3, 3]);
 
-    // drift sutil para o cone/spotlight "respirar"
+    const snx = useSpring(nx, { stiffness: 55, damping: 22, mass: 0.45 });
+    const sny = useSpring(ny, { stiffness: 55, damping: 22, mass: 0.45 });
+
+    const titleX = useTransform(snx, [-0.5, 0.5], [-3.5, 3.5]);
+    const titleY = useTransform(sny, [-0.5, 0.5], [-2.2, 2.2]);
+    const subtitleX = useTransform(snx, [-0.5, 0.5], [-2.2, 2.2]);
+    const subtitleY = useTransform(sny, [-0.5, 0.5], [-1.6, 1.6]);
+
+    // drift
     const drift = useMotionValue(0);
     React.useEffect(() => {
       let raf = 0;
       const start = performance.now();
       const loop = (t: number) => {
         const s = (t - start) / 1000;
-        drift.set(Math.sin(s * 0.9) * 18); // 18px drift
+        drift.set(Math.sin(s * 0.9) * 12);
         raf = requestAnimationFrame(loop);
       };
       raf = requestAnimationFrame(loop);
@@ -93,8 +134,10 @@ const Hero = React.forwardRef<HTMLElement, HeroProps>(
         const rect = e.currentTarget.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
+
         mx.set(x);
         my.set(y);
+
         if (rafRef.current) cancelAnimationFrame(rafRef.current);
         rafRef.current = requestAnimationFrame(() => {
           nx.set(x / rect.width - 0.5);
@@ -107,7 +150,9 @@ const Hero = React.forwardRef<HTMLElement, HeroProps>(
     const onLeave = React.useCallback(() => {
       nx.set(0);
       ny.set(0);
-    }, [nx, ny]);
+      mx.set((typeof window !== "undefined" ? window.innerWidth : 0) / 2);
+      my.set((typeof window !== "undefined" ? window.innerHeight : 0) / 2);
+    }, [nx, ny, mx, my]);
 
     React.useEffect(() => {
       return () => {
@@ -115,14 +160,15 @@ const Hero = React.forwardRef<HTMLElement, HeroProps>(
       };
     }, []);
 
+    // Gradientes controlados pelo scroll (size/alpha são MotionValues)
     const spotlight = useMotionTemplate`
-      radial-gradient(640px circle at ${sx}px ${sy}px, rgba(255,255,255,.20), transparent 60%)
+      radial-gradient(${spotSize}px circle at ${sx}px ${sy}px, rgba(255,255,255,${spotAlpha}), transparent 62%)
     `;
     const ambient = useMotionTemplate`
-      radial-gradient(900px circle at calc(${sx}px + ${drift}px) 10%, rgba(255,255,255,.14), transparent 60%)
+      radial-gradient(${ambSize}px circle at calc(${sx}px + ${drift}px) 10%, rgba(255,255,255,${ambAlpha}), transparent 64%)
     `;
 
-    // centraliza luz inicial para não ficar invisível antes do primeiro movimento
+    // centraliza inicial
     React.useEffect(() => {
       const centerX = (typeof window !== "undefined" ? window.innerWidth : 0) / 2;
       const centerY = (typeof window !== "undefined" ? window.innerHeight : 0) / 2;
@@ -130,9 +176,14 @@ const Hero = React.forwardRef<HTMLElement, HeroProps>(
       my.set(centerY);
     }, [mx, my]);
 
+    const v = {
+      hidden: { opacity: 0, y: 14, filter: "blur(6px)" },
+      show: { opacity: 1, y: 0, filter: "blur(0px)" },
+    };
+
     return (
       <section
-        ref={ref}
+        ref={setRefs}
         onMouseMove={onMove}
         onMouseLeave={onLeave}
         className={cn("relative w-full min-h-screen overflow-hidden bg-black", className)}
@@ -141,44 +192,44 @@ const Hero = React.forwardRef<HTMLElement, HeroProps>(
         {/* Base */}
         <div className="absolute inset-0 z-0 bg-black" />
 
-        {/* Lamp cone */}
-        <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 z-10 h-[520px] w-[900px]">
+        {/* Background */}
+        <DottedSurface className="z-[5] opacity-55" />
+
+        {/* Cone topo (sutil) */}
+        <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 z-10 h-[560px] w-[980px]">
           <div
-            className="absolute inset-0 opacity-70 blur-2xl"
+            className="absolute inset-0 blur-2xl"
             style={{
-              clipPath: "polygon(50% 0%, 52% 0%, 78% 100%, 22% 100%)",
+              clipPath: "polygon(50% 0%, 51.6% 0%, 77.5% 100%, 22.5% 100%)",
               background:
-                "radial-gradient(closest-side at 50% 0%, rgba(255,255,255,0.35), rgba(255,255,255,0.10) 45%, transparent 78%)",
+                "radial-gradient(closest-side at 50% 0%, rgba(255,255,255,0.30), rgba(255,255,255,0.08) 52%, transparent 80%)",
+              opacity: 0.65,
             }}
           />
-          {/* Hotspot da lampada */}
-          <div className="absolute left-1/2 top-[-80px] h-72 w-[52rem] -translate-x-1/2 rounded-full bg-white/18 blur-3xl" />
-          <div className="absolute left-1/2 top-[-40px] h-24 w-[28rem] -translate-x-1/2 rounded-full bg-white/18 blur-2xl" />
+          <div className="absolute left-1/2 top-[-90px] h-80 w-[56rem] -translate-x-1/2 rounded-full bg-white/12 blur-3xl" />
+          <div className="absolute left-1/2 top-[-48px] h-24 w-[30rem] -translate-x-1/2 rounded-full bg-white/12 blur-2xl" />
         </div>
 
-        {/* Grid sutil */}
-        <div className="absolute inset-0 z-10 opacity-25 [background-image:linear-gradient(to_right,rgba(255,255,255,.06)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,.06)_1px,transparent_1px)] [background-size:90px_90px] [mask-image:radial-gradient(ellipse_at_center,black_45%,transparent_72%)]" />
+        {/* Lights (agora cinemático com scroll) */}
+        <motion.div style={{ backgroundImage: spotlight }} className="pointer-events-none absolute inset-0 z-20" />
+        <motion.div style={{ backgroundImage: ambient }} className="pointer-events-none absolute inset-0 z-20 opacity-70" />
 
-        {/* Spotlight mouse */}
-        <motion.div
-          style={{ backgroundImage: spotlight }}
-          className="pointer-events-none absolute inset-0 z-20"
-        />
-        <motion.div
-          style={{ backgroundImage: ambient }}
-          className="pointer-events-none absolute inset-0 z-20 opacity-70"
-        />
-
-        {/* Vignette */}
+        {/* Vignette + grain */}
         <div className="pointer-events-none absolute inset-0 z-30 bg-[radial-gradient(1200px_circle_at_50%_35%,transparent_30%,rgba(0,0,0,0.92)_78%)]" />
-
-        {/* Grain */}
         <div className="pointer-events-none absolute inset-0 z-40 opacity-[0.08] mix-blend-overlay [background-image:url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22400%22><filter id=%22n%22><feTurbulence type=%22fractalNoise%22 baseFrequency=%220.8%22 numOctaves=%223%22 stitchTiles=%22stitch%22/></filter><rect width=%22400%22 height=%22400%22 filter=%22url(%23n)%22 opacity=%220.35%22/></svg>')]" />
 
         {/* Content */}
-        <div className="relative z-50 mx-auto flex min-h-screen max-w-6xl flex-col items-center justify-center px-6 text-center">
+        <motion.div
+          ref={contentRef}
+          style={{ opacity: contentOpacityOut, y: contentYOut, scale: contentScaleOut }}
+          className="relative z-50 mx-auto flex min-h-screen max-w-6xl flex-col items-center justify-center px-6 text-center"
+        >
           <motion.h1
-            style={{ x: titleX, y: titleY }}
+            style={{ x: titleX, y: titleY, willChange: "transform" as any }}
+            variants={v}
+            initial="hidden"
+            animate={isInView ? "show" : "hidden"}
+            transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
             className={cn(
               "text-balance text-4xl font-semibold tracking-tight text-white sm:text-5xl md:text-6xl lg:text-7xl",
               titleClassName
@@ -189,7 +240,11 @@ const Hero = React.forwardRef<HTMLElement, HeroProps>(
 
           {subtitle && (
             <motion.p
-              style={{ x: subtitleX, y: subtitleY }}
+              style={{ x: subtitleX, y: subtitleY, willChange: "transform" as any }}
+              variants={v}
+              initial="hidden"
+              animate={isInView ? "show" : "hidden"}
+              transition={{ duration: 0.7, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
               className={cn(
                 "mt-5 max-w-3xl text-pretty text-base text-white/60 sm:text-lg md:text-xl",
                 subtitleClassName
@@ -200,19 +255,31 @@ const Hero = React.forwardRef<HTMLElement, HeroProps>(
           )}
 
           {actions && actions.length > 0 && (
-            <div className={cn("mt-10 flex flex-wrap justify-center gap-3", actionsClassName)}>
+            <motion.div
+              variants={v}
+              initial="hidden"
+              animate={isInView ? "show" : "hidden"}
+              transition={{ duration: 0.7, delay: 0.16, ease: [0.16, 1, 0.3, 1] }}
+              className={cn("mt-10 flex flex-wrap justify-center gap-3", actionsClassName)}
+            >
               {actions.map((action, idx) => (
                 <Button key={idx} variant={mapButtonVariant(action.variant)} asChild>
                   <Link href={action.href}>{action.label}</Link>
                 </Button>
               ))}
-            </div>
+            </motion.div>
           )}
 
-          <p className="mt-12 text-xs text-white/35">
-            Sistemas sob medida | Automacao | Integracoes | Dashboards
-          </p>
-        </div>
+          <motion.p
+            variants={v}
+            initial="hidden"
+            animate={isInView ? "show" : "hidden"}
+            transition={{ duration: 0.7, delay: 0.22, ease: [0.16, 1, 0.3, 1] }}
+            className="mt-12 text-xs text-white/35"
+          >
+            Sistemas sob medida | Automação | Integrações | Dashboards
+          </motion.p>
+        </motion.div>
       </section>
     );
   }
