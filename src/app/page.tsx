@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import * as React from "react";
 import {
@@ -23,9 +23,9 @@ import { Footer } from "../components/ui/footer";
 
 export default function Home() {
   const navItems = [
-    { name: "Inicio", url: "#topo", icon: HomeIcon },
+    { name: "Início", url: "#topo", icon: HomeIcon },
     { name: "Sobre", url: "#sobre", icon: Users },
-    { name: "Servicos", url: "#servicos", icon: Wrench },
+    { name: "Serviços", url: "#servicos", icon: Wrench },
     { name: "FAQ", url: "#faq", icon: HelpCircle },
     { name: "Contato", url: "#contato", icon: Mail },
   ];
@@ -35,7 +35,7 @@ export default function Home() {
     { id: 2, name: "Davi Silva", designation: "COO", image: "/images/team/Davi.jpg" },
     { id: 3, name: "Wendel Cinelli", designation: "Back-end developer", image: "/images/team/coxa.jpg" },
     { id: 4, name: "Gustavo Duarte", designation: "Front-end developer", image: "/images/team/negao.jpg" },
-    { id: 5, name: "Lucas Silva", designation: "Automacoes", image: "/images/team/Lucas.jpg" },
+    { id: 5, name: "Lucas Silva", designation: "Automações", image: "/images/team/Lucas.jpg" },
     { id: 6, name: "Pedro Henrique", designation: "Marketing", image: "/images/team/PH.jpg" },
   ];
 
@@ -44,11 +44,11 @@ export default function Home() {
       <NavBar items={navItems} />
 
       <Hero
-        title="Bem-vindo a FifthTech"
-        subtitle="Modernizamos processos com Softwares sob medida, automacoes e integracoes com padrao premium e foco em eficiencia real."
+        title="Produtos digitais que destravam receita e eficiência"
+        subtitle="Arquitetamos software, automações e integrações de ponta a ponta para que sua operação rode sem atritos, com velocidade, governança e experiência premium para clientes e times."
         actions={[
-          { label: "Falar conosco", href: "#contato", variant: "default" },
-          { label: "Ver entregas", href: "#servicos", variant: "outline" },
+          { label: "Planejar meu próximo ciclo", href: "#contato", variant: "default" },
+          { label: "Ver como entregamos", href: "#servicos", variant: "outline" },
         ]}
         subtitleClassName="max-w-[760px]"
       />
@@ -76,9 +76,9 @@ export default function Home() {
           { icon: <MessageCircle size={16} />, href: "https://wa.me/", label: "WhatsApp" },
         ]}
         mainLinks={[
-          { href: "#topo", label: "Inicio" },
+          { href: "#topo", label: "Início" },
           { href: "#sobre", label: "Sobre" },
-          { href: "#servicos", label: "Servicos" },
+          { href: "#servicos", label: "Serviços" },
           { href: "#faq", label: "FAQ" },
           { href: "#contato", label: "Contato" },
         ]}

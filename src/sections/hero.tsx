@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import * as React from "react";
 import Link from "next/link";
@@ -71,37 +71,30 @@ const Hero = React.forwardRef<HTMLElement, HeroProps>(
       [ref]
     );
 
-    // ---------- ENTRADA ----------
     const contentRef = React.useRef<HTMLDivElement | null>(null);
     const isInView = useInView(contentRef, { once: true, margin: "-20% 0px -35% 0px" });
 
-    // ---------- SCROLL ----------
     const { scrollYProgress } = useScroll({
       target: sectionRef,
       offset: ["start start", "end start"],
     });
 
-    // Saída do conteúdo
     const contentOpacityOut = useTransform(scrollYProgress, [0, 0.65], [1, 0]);
     const contentYOut = useTransform(scrollYProgress, [0, 0.65], [0, 28]);
     const contentScaleOut = useTransform(scrollYProgress, [0, 0.65], [1, 0.985]);
 
-    // Spotlight “fecha” com o scroll (cinemático)
     const spotSize = useTransform(scrollYProgress, [0, 0.65], [520, 260]);
     const spotAlpha = useTransform(scrollYProgress, [0, 0.65], [0.16, 0.06]);
 
-    // Ambient também dá uma apagada leve pra acompanhar
     const ambSize = useTransform(scrollYProgress, [0, 0.65], [860, 620]);
-    const ambAlpha = useTransform(scrollYProgress, [0, 0.65], [0.10, 0.05]);
+    const ambAlpha = useTransform(scrollYProgress, [0, 0.65], [0.1, 0.05]);
 
-    // ---------- Luz / cursor ----------
     const mx = useMotionValue(0);
     const my = useMotionValue(0);
 
     const sx = useSpring(mx, { stiffness: 70, damping: 20, mass: 0.34 });
     const sy = useSpring(my, { stiffness: 70, damping: 20, mass: 0.34 });
 
-    // parallax
     const nx = useMotionValue(0);
     const ny = useMotionValue(0);
 
@@ -113,14 +106,13 @@ const Hero = React.forwardRef<HTMLElement, HeroProps>(
     const subtitleX = useTransform(snx, [-0.5, 0.5], [-2.2, 2.2]);
     const subtitleY = useTransform(sny, [-0.5, 0.5], [-1.6, 1.6]);
 
-    // drift
     const drift = useMotionValue(0);
     React.useEffect(() => {
       let raf = 0;
       const start = performance.now();
       const loop = (t: number) => {
         const s = (t - start) / 1000;
-        drift.set(Math.sin(s * 0.9) * 8); // amplitude menor para suavizar
+        drift.set(Math.sin(s * 0.9) * 8);
         raf = requestAnimationFrame(loop);
       };
       raf = requestAnimationFrame(loop);
@@ -160,7 +152,6 @@ const Hero = React.forwardRef<HTMLElement, HeroProps>(
       };
     }, []);
 
-    // Gradientes controlados pelo scroll (size/alpha são MotionValues)
     const spotlight = useMotionTemplate`
       radial-gradient(${spotSize}px circle at ${sx}px ${sy}px, rgba(255,255,255,${spotAlpha}), transparent 62%)
     `;
@@ -168,7 +159,6 @@ const Hero = React.forwardRef<HTMLElement, HeroProps>(
       radial-gradient(${ambSize}px circle at calc(${sx}px + ${drift}px) 10%, rgba(255,255,255,${ambAlpha}), transparent 64%)
     `;
 
-    // centraliza inicial
     React.useEffect(() => {
       const centerX = (typeof window !== "undefined" ? window.innerWidth : 0) / 2;
       const centerY = (typeof window !== "undefined" ? window.innerHeight : 0) / 2;
@@ -189,13 +179,10 @@ const Hero = React.forwardRef<HTMLElement, HeroProps>(
         className={cn("relative w-full min-h-screen overflow-hidden bg-black", className)}
         {...props}
       >
-        {/* Base */}
         <div className="absolute inset-0 z-0 bg-black" />
 
-        {/* Background */}
         <DottedSurface className="z-[5] opacity-55" />
 
-        {/* Cone topo (sutil) */}
         <div className="pointer-events-none absolute top-0 left-1/2 -translate-x-1/2 z-10 h-[560px] w-[980px]">
           <div
             className="absolute inset-0 blur-2xl"
@@ -210,15 +197,12 @@ const Hero = React.forwardRef<HTMLElement, HeroProps>(
           <div className="absolute left-1/2 top-[-48px] h-24 w-[30rem] -translate-x-1/2 rounded-full bg-white/12 blur-2xl" />
         </div>
 
-        {/* Lights (agora cinemático com scroll) */}
         <motion.div style={{ backgroundImage: spotlight }} className="pointer-events-none absolute inset-0 z-20" />
         <motion.div style={{ backgroundImage: ambient }} className="pointer-events-none absolute inset-0 z-20 opacity-70" />
 
-        {/* Vignette + grain */}
         <div className="pointer-events-none absolute inset-0 z-30 bg-[radial-gradient(1200px_circle_at_50%_35%,transparent_30%,rgba(0,0,0,0.92)_78%)]" />
         <div className="pointer-events-none absolute inset-0 z-40 opacity-[0.08] mix-blend-overlay [background-image:url('data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22400%22><filter id=%22n%22><feTurbulence type=%22fractalNoise%22 baseFrequency=%220.8%22 numOctaves=%223%22 stitchTiles=%22stitch%22/></filter><rect width=%22400%22 height=%22400%22 filter=%22url(%23n)%22 opacity=%220.35%22/></svg>')]" />
 
-        {/* Content */}
         <motion.div
           ref={contentRef}
           style={{ opacity: contentOpacityOut, y: contentYOut, scale: contentScaleOut }}
@@ -277,7 +261,7 @@ const Hero = React.forwardRef<HTMLElement, HeroProps>(
             transition={{ duration: 0.6, delay: 0.18, ease: [0.16, 1, 0.3, 1] }}
             className="mt-12 text-xs text-white/35"
           >
-            Sistemas sob medida | Automação | Integrações | Dashboards
+            Software sob medida | Automação | Integrações | Experiências digitais
           </motion.p>
         </motion.div>
       </section>

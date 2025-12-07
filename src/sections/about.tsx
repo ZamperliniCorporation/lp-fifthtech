@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import * as React from "react";
 import { motion } from "framer-motion";
@@ -66,14 +66,13 @@ export default function About({
             variants={item}
             className="mt-4 text-3xl font-semibold tracking-tight text-white sm:text-4xl"
           >
-            Software sob medida com padrão premium — do diagnóstico à entrega.
+            Equipe sênior construindo software sob medida com padrão premium, do diagnóstico à entrega.
           </motion.h2>
 
           <motion.p variants={item} className="mt-5 text-white/60 leading-relaxed">
-            A FifthTech projeta e desenvolve soluções digitais para empresas que
-            precisam de eficiência real: sistemas internos, automações, integrações,
-            dashboards e produtos digitais. Nosso foco é construir rápido, com
-            clareza, qualidade e suporte próximo.
+            A FifthTech desenha produtos digitais que destravam operações e receita: sistemas internos,
+            automações, integrações, dashboards e produtos orientados a clientes. Trabalhamos com clareza de escopo,
+            cadência de release e suporte próximo para reduzir atrito e aumentar confiabilidade.
           </motion.p>
 
           <motion.div variants={item} className="mt-8 flex flex-wrap gap-2">
@@ -105,10 +104,10 @@ export default function About({
           </motion.p>
 
           <motion.p variants={item} className="mt-2 text-sm text-white/60">
-            Um time enxuto e completo — produto, engenharia e marketing trabalhando juntos.
+            Time enxuto e completo: produto, engenharia e marketing trabalhando juntos para tirar bloqueios do caminho.
           </motion.p>
 
-          {/* área segura pro tooltip */}
+          {/* Area segura pro tooltip */}
           <motion.div variants={item} className="mt-6 pt-10">
             <AnimatedTooltip items={people} />
           </motion.div>
@@ -117,14 +116,14 @@ export default function About({
             <div className="rounded-xl border border-white/10 bg-black/30 px-4 py-3">
               <p className="text-xs text-white/50">Como trabalhamos</p>
               <p className="mt-1 text-sm text-white/70">
-                Briefing → Diagnóstico → Prototipação → Desenvolvimento → Deploy → Evolução
+                Briefing &gt; Diagnóstico &gt; Prototipação &gt; Desenvolvimento &gt; Deploy &gt; Evolução.
               </p>
             </div>
 
             <div className="rounded-xl border border-white/10 bg-black/30 px-4 py-3">
               <p className="text-xs text-white/50">Compromisso</p>
               <p className="mt-1 text-sm text-white/70">
-                Comunicação clara, entregas frequentes e qualidade de código.
+                Comunicação clara, entregas frequentes, qualidade de código e suporte perto do negócio.
               </p>
             </div>
           </motion.div>
@@ -133,4 +132,3 @@ export default function About({
     </section>
   );
 }
-
