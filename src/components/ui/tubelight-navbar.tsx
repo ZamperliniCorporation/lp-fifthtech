@@ -20,12 +20,10 @@ interface NavBarProps {
 export function NavBar({ items, className }: NavBarProps) {
   const [activeTab, setActiveTab] = React.useState(items[0]?.name ?? "");
 
-  // ativa pelo scroll (IntersectionObserver)
+  // ativa pelo scroll (IntersectionObserver) — mais estável
   React.useEffect(() => {
-    const ids = items
-      .map((i) => i.url)
-      .filter((u) => u.startsWith("#"))
-      .map((u) => u.slice(1));
+    const hashItems = items.filter((i) => i.url.startsWith("#"));
+    const ids = hashItems.map((i) => i.url.slice(1));
 
     const els = ids
       .map((id) => document.getElementById(id))
@@ -33,26 +31,38 @@ export function NavBar({ items, className }: NavBarProps) {
 
     if (!els.length) return;
 
-    const byIdToName = new Map(
-      items
-        .filter((i) => i.url.startsWith("#"))
-        .map((i) => [i.url.slice(1), i.name] as const)
-    );
+    const byIdToName = new Map(hashItems.map((i) => [i.url.slice(1), i.name] as const));
 
     const obs = new IntersectionObserver(
       (entries) => {
-        const visible = entries
-          .filter((e) => e.isIntersecting)
-          .sort((a, b) => (b.intersectionRatio ?? 0) - (a.intersectionRatio ?? 0))[0];
+        const visible = entries.filter((e) => e.isIntersecting);
+        if (!visible.length) return;
 
-        if (!visible?.target?.id) return;
-        const next = byIdToName.get(visible.target.id);
+        // 1) tenta pegar a section mais próxima do "topo útil" da tela
+        // (isso deixa bem consistente quando duas sections ficam visíveis)
+        const targetEntry = visible
+          .slice()
+          .sort((a, b) => {
+            const aTop = Math.abs((a.target as HTMLElement).getBoundingClientRect().top);
+            const bTop = Math.abs((b.target as HTMLElement).getBoundingClientRect().top);
+
+            // prioridade: quem está mais perto do topo (menor abs top)
+            if (aTop !== bTop) return aTop - bTop;
+
+            // desempate: maior ratio
+            return (b.intersectionRatio ?? 0) - (a.intersectionRatio ?? 0);
+          })[0];
+
+        const id = (targetEntry.target as HTMLElement).id;
+        const next = byIdToName.get(id);
         if (next) setActiveTab(next);
       },
       {
         root: null,
-        threshold: [0.25, 0.4, 0.55],
-        rootMargin: "-20% 0px -60% 0px",
+        // mais thresholds = atualização mais suave e correta
+        threshold: [0.08, 0.12, 0.2, 0.3, 0.45, 0.6],
+        // ativa quando a section entra no "miolo" da tela
+        rootMargin: "-30% 0px -55% 0px",
       }
     );
 
@@ -63,7 +73,6 @@ export function NavBar({ items, className }: NavBarProps) {
   return (
     <div
       className={cn(
-        // changed top-5 for a lower position (e.g., top-12 = 3rem/48px, adjust as needed)
         "fixed top-12 left-1/2 -translate-x-1/2 z-[9999]",
         className
       )}
@@ -81,6 +90,7 @@ export function NavBar({ items, className }: NavBarProps) {
               className={cn(
                 "relative rounded-full px-5 py-2 text-sm font-semibold transition-all duration-200",
                 "text-white/70 hover:text-white hover:-translate-y-[1px]",
+                "focus:outline-none focus-visible:ring-2 focus-visible:ring-white/35 focus-visible:ring-offset-0",
                 isActive && "text-white"
               )}
             >
