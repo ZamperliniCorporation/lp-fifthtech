@@ -92,9 +92,9 @@ export default function Home() {
           </div>
         }
         socialLinks={[
-          { icon: <Instagram size={16} />, href: "https://instagram.com", label: "Instagram" },
-          { icon: <Linkedin size={16} />, href: "https://linkedin.com", label: "LinkedIn" },
-          { icon: <MessageCircle size={16} />, href: "https://wa.me/", label: "WhatsApp" },
+          { icon: <Instagram size={16} />, href: "https://www.instagram.com/fift.htech?igsh=MXVmcWF1aWQ2a3lydw%3D%3D&utm_source=qr", label: "Instagram" },
+          { icon: <Linkedin size={16} />, href: "https://www.linkedin.com/in/fifth-tech-14a969398?utm_source=share_via&utm_content=profile&utm_medium=member_ios", label: "LinkedIn" },
+          { icon: <MessageCircle size={16} />, href: "https://wa.me/5511983790224?text=Ol%C3%A1!%20Tenho%20interesse%20em%20conhecer%20melhor%20as%20solu%C3%A7%C3%B5es%20da%20FifthTech...", label: "WhatsApp" },
         ]}
         mainLinks={[
           { href: "#topo", label: "Início" },

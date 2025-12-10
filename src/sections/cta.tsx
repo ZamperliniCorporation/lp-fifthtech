@@ -48,13 +48,13 @@ export function CTASection() {
                   padding: "0.7rem 1.35rem",
                 }}
               >
-                <Link href="https://wa.me/" target="_blank" rel="noreferrer">
+                <Link href="https://wa.me/5511983790224?text=Ol%C3%A1!%20Tenho%20interesse%20em%20conhecer%20melhor%20as%20solu%C3%A7%C3%B5es%20da%20FifthTech..." target="_blank" rel="noreferrer">
                   Chamar no WhatsApp
                 </Link>
               </Button>
 
               <Button asChild variant="outline">
-                <Link href="mailto:contato@fifthtech.com.br">Enviar e-mail</Link>
+                <Link href="mailto:fifthtech2025@gmail.com">Enviar e-mail</Link>
               </Button>
             </div>
 
