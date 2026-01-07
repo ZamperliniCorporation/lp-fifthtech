@@ -60,7 +60,7 @@ export default function Home() {
       <Hero
         title={
           <Typewriter
-            text="Simples pra operar. Forte pra escalar."
+            text="Simples para operar. Forte para escalar."
             speed={70}
             className="inline-block"
           />
