@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import * as React from "react";
 import Link from "next/link";
@@ -48,7 +48,7 @@ export function CTASection() {
                   padding: "0.7rem 1.35rem",
                 }}
               >
-                <Link href="https://wa.me/5511983790224?text=Ol%C3%A1!%20Tenho%20interesse%20em%20conhecer%20melhor%20as%20solu%C3%A7%C3%B5es%20da%20FifthTech..." target="_blank" rel="noreferrer">
+                <Link href="https://wa.me/5511920144800?text=Ol%C3%A1!%20Tenho%20interesse%20em%20conhecer%20melhor%20as%20solu%C3%A7%C3%B5es%20da%20FifthTech..." target="_blank" rel="noreferrer">
                   Chamar no WhatsApp
                 </Link>
               </Button>

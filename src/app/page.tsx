@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import * as React from "react";
 import {
@@ -36,7 +36,7 @@ export default function Home() {
     { id: 3, name: "Wendel Cinelli", designation: "Back-end developer", image: "/images/team/coxa.jpg" },
     { id: 4, name: "Gustavo Duarte", designation: "Front-end developer", image: "/images/team/negao.jpg" },
     { id: 5, name: "Lucas Silva", designation: "Automações", image: "/images/team/Lucas.jpg" },
-    { id: 6, name: "Pedro Henrique", designation: "Marketing", image: "/images/team/PH.jpg" },
+    { id: 6, name: "Pedro Henrique", designation: "Product designer", image: "/images/team/PH.jpg" },
   ];
 
   return (
@@ -93,8 +93,8 @@ export default function Home() {
         }
         socialLinks={[
           { icon: <Instagram size={16} />, href: "https://www.instagram.com/fifth.tech?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==", label: "Instagram" },
-          { icon: <Linkedin size={16} />, href: "https://www.linkedin.com/in/fifth-tech-14a969398?utm_source=share_via&utm_content=profile&utm_medium=member_ios", label: "LinkedIn" },
-          { icon: <MessageCircle size={16} />, href: "https://wa.me/5511983790224?text=Ol%C3%A1!%20Tenho%20interesse%20em%20conhecer%20melhor%20as%20solu%C3%A7%C3%B5es%20da%20FifthTech...", label: "WhatsApp" },
+          { icon: <Linkedin size={16} />, href: "https://www.linkedin.com/company/112497365/admin/dashboard/", label: "LinkedIn" },
+          { icon: <MessageCircle size={16} />, href: "https://wa.me/5511920144800?text=Ol%C3%A1!%20Tenho%20interesse%20em%20conhecer%20melhor%20as%20solu%C3%A7%C3%B5es%20da%20FifthTech...", label: "WhatsApp" },
         ]}
         mainLinks={[
           { href: "#topo", label: "Início" },
